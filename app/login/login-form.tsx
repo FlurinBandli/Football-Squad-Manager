@@ -25,8 +25,8 @@ import { LogIn } from "lucide-react";
  */
 
 const formSchema = z.object({
-  username: z.string().min(1, "Benutzername ist erforderlich"),
-  password: z.string().min(1, "Passwort ist erforderlich"),
+  username: z.string().trim().min(1, "Benutzername ist erforderlich"),
+  password: z.string().trim().min(1, "Passwort ist erforderlich"),
 });
 
 export default function LoginForm() {

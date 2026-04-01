@@ -14,13 +14,21 @@ import {
   Squad,
   SquadPayload,
 } from "@/types";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { format } from "date-fns";
+import { ChevronDownIcon } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Field, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { useState } from "react";
 import SquadBuilder from "@/app/admin/squads/components/squad-builder";
 import { useRouter } from "next/navigation";
@@ -36,9 +44,11 @@ import { toast } from "sonner";
  */
 
 const formSchema = z.object({
-  name: z.string().min(1, "Teamname ist erforderlich"),
-  description: z.string().min(1, "Beschreibung ist erforderlich"),
-  date: z.string().min(1, "Datum ist erforderlich"),
+  name: z.string().trim().min(1, "Teamname ist erforderlich"),
+  description: z.string().trim().min(1, "Beschreibung ist erforderlich"),
+  date: z.date({
+    error: "Datum ist erforderlich",
+  }),
 });
 
 export default function SquadForm({
@@ -63,7 +73,9 @@ export default function SquadForm({
       description:
         mode === "edit" && initialSquad ? initialSquad.description : "",
       date:
-        mode === "edit" && initialSquad ? initialSquad.date.split("T")[0] : "",
+        mode === "edit" && initialSquad
+          ? new Date(initialSquad.date)
+          : undefined,
     },
   });
   /**
@@ -110,7 +122,7 @@ export default function SquadForm({
       trainers: squad.trainers.map((t) => ({ id: t.id })),
       name: data.name,
       description: data.description,
-      date: new Date(data.date).toISOString(),
+      date: data.date.toISOString(),
       squadPlayers,
     };
 
@@ -164,7 +176,33 @@ export default function SquadForm({
 
               <Field className="flex-1">
                 <FieldLabel>Datum</FieldLabel>
-                <Input type="date" {...form.register("date")} />
+
+                <Controller
+                  control={form.control}
+                  name="date"
+                  render={({ field }) => (
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant="outline"
+                          className="w-full justify-between cursor-pointer"
+                        >
+                          {field.value
+                            ? format(field.value, "dd.MM.yyyy")
+                            : "Datum auswählen"}
+                          <ChevronDownIcon />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  )}
+                />
                 {form.formState.errors.date && (
                   <p className="text-sm text-red-500">
                     {form.formState.errors.date.message}

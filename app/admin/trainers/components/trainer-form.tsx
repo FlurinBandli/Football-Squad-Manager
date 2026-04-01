@@ -31,8 +31,8 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 
 const formSchema = z.object({
-  firstName: z.string().min(1, "Vorname ist erforderlich"),
-  lastName: z.string().min(1, "Nachname ist erforderlich"),
+  firstName: z.string().trim().min(1, "Vorname ist erforderlich"),
+  lastName: z.string().trim().min(1, "Nachname ist erforderlich"),
   gender: z.enum(["Male", "Female", "Other"]),
 });
 

@@ -81,6 +81,161 @@ export default function SquadBuilder({
     }));
   };
 
+  const renderPlayerSection = (
+    title: string,
+    position: Position,
+    isAdding: boolean,
+    setIsAdding: Dispatch<SetStateAction<boolean>>
+  ) => (
+    <>
+      <div className="flex items-center justify-center gap-2 pt-4">
+        <span className="font-semibold">{title}</span>
+        <Button
+          title="Spieler hinzufügen"
+          type="button"
+          className="cursor-pointer"
+          onClick={() => setIsAdding(true)}
+        >
+          <UserPlus className="w-4 h-4" />
+        </Button>
+      </div>
+
+      <div className="flex flex-row flex-wrap justify-center gap-2">
+        {playersByPosition(position).map((player) => (
+          <div
+            key={player.id}
+            className="flex flex-col items-center text-center gap-2"
+          >
+            <div className="flex flex-row-reverse gap-2">
+              <Button
+                title="Spieler entfernen"
+                type="button"
+                size="icon"
+                variant="destructive"
+                className="cursor-pointer"
+                onClick={() => removePlayer(player.id)}
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+              <PlayerCombobox
+                players={players.filter(
+                  (p) => p.id === player.id || !selectedPlayerIds.includes(p.id)
+                )}
+                value={player}
+                onSelect={(p) => {
+                  removePlayer(player.id);
+                  addPlayerToPosition(p, position);
+                }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div className="flex justify-center">
+        {isAdding && (
+          <div className="flex flex-row-reverse gap-2">
+            <Button
+              title="Hinzufügen abbrechen"
+              type="button"
+              size="icon"
+              variant="destructive"
+              className="cursor-pointer"
+              onClick={() => setIsAdding(false)}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+            <PlayerCombobox
+              players={players.filter((p) => !selectedPlayerIds.includes(p.id))}
+              onSelect={(player) => {
+                addPlayerToPosition(player, position);
+                setIsAdding(false);
+              }}
+            />
+          </div>
+        )}
+      </div>
+    </>
+  );
+
+  const renderTrainerSection = (
+    title: string,
+    isAdding: boolean,
+    setIsAdding: Dispatch<SetStateAction<boolean>>
+  ) => (
+    <>
+      <div className="flex items-center justify-center gap-2 pt-4">
+        <span className="font-semibold">{title}</span>
+        <Button
+          title="Trainer hinzufügen"
+          type="button"
+          className="cursor-pointer"
+          onClick={() => setIsAdding(true)}
+        >
+          <UserPlus className="w-4 h-4" />
+        </Button>
+      </div>
+      <div className="flex flex-row flex-wrap justify-center gap-2">
+        {squad.trainers.map((trainer) => (
+          <div
+            key={trainer.id}
+            className="flex flex-col items-center text-center gap-2"
+          >
+            <div className="flex flex-row-reverse gap-2">
+              <Button
+                title="Trainer entfernen"
+                type="button"
+                size="icon"
+                variant="destructive"
+                className="cursor-pointer"
+                onClick={() => removeTrainer(trainer.id)}
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+              <TrainerCombobox
+                trainers={trainers.filter(
+                  (t) =>
+                    t.id === trainer.id ||
+                    !squad.trainers.some((bt) => bt.id === t.id)
+                )}
+                value={trainer}
+                onSelect={(t) => {
+                  removeTrainer(trainer.id);
+                  addTrainer(t);
+                }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="flex justify-center">
+        {isAdding && (
+          <div className="flex flex-row-reverse gap-2">
+            <Button
+              title="Hinzufügen abbrechen"
+              type="button"
+              size="icon"
+              variant="destructive"
+              className="cursor-pointer"
+              onClick={() => setIsAdding(false)}
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+            <TrainerCombobox
+              trainers={trainers.filter(
+                (t) => !squad.trainers.some((b) => b.id === t.id)
+              )}
+              onSelect={(trainer) => {
+                addTrainer(trainer);
+                setIsAdding(false);
+              }}
+            />
+          </div>
+        )}
+      </div>{" "}
+    </>
+  );
+
   return (
     <Card>
       <CardHeader>
@@ -91,449 +246,55 @@ export default function SquadBuilder({
           {/* left side: the lineup */}
           <div className="flex flex-col gap-4 border-2 w-2/3">
             {/* striker section */}
-            <div className="flex items-center justify-center gap-2 pt-4">
-              <span className="font-semibold">Sturm</span>
-              <Button
-                title="Spieler hinzufügen"
-                type="button"
-                className="cursor-pointer"
-                onClick={() => setAddingStriker(true)}
-              >
-                <UserPlus className="w-4 h-4" />
-              </Button>
-            </div>
-
-            <div className="flex flex-row flex-wrap justify-center gap-2">
-              {playersByPosition("Striker").map((player) => (
-                <div
-                  key={player.id}
-                  className="flex flex-col items-center text-center gap-2"
-                >
-                  <div className="flex flex-row-reverse gap-2">
-                    <Button
-                      title="Spieler entfernen"
-                      type="button"
-                      size="icon"
-                      variant="destructive"
-                      className="cursor-pointer"
-                      onClick={() => removePlayer(player.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                    <PlayerCombobox
-                      players={players.filter(
-                        (p) =>
-                          p.id === player.id ||
-                          !selectedPlayerIds.includes(p.id)
-                      )}
-                      value={player}
-                      onSelect={(p) => {
-                        removePlayer(player.id);
-                        addPlayerToPosition(p, "Striker");
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex justify-center">
-              {addingStriker && (
-                <div className="flex flex-row-reverse gap-2">
-                  <Button
-                    title="Hinzufügen abbrechen"
-                    type="button"
-                    size="icon"
-                    variant="destructive"
-                    className="cursor-pointer"
-                    onClick={() => setAddingStriker(false)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                  <PlayerCombobox
-                    players={players.filter(
-                      (p) => !selectedPlayerIds.includes(p.id)
-                    )}
-                    onSelect={(player) => {
-                      addPlayerToPosition(player, "Striker");
-                      setAddingStriker(false);
-                    }}
-                  />
-                </div>
-              )}
-            </div>
+            {renderPlayerSection(
+              "Sturm",
+              "Striker",
+              addingStriker,
+              setAddingStriker
+            )}
 
             {/* midfielder section */}
 
-            <div className="flex items-center justify-center gap-2">
-              <span className="font-semibold">Mittelfeld</span>
-              <Button
-                type="button"
-                title="Spieler hinzufügen"
-                className="cursor-pointer"
-                onClick={() => setAddingMidfielder(true)}
-              >
-                <UserPlus className="w-4 h-4" />
-              </Button>
-            </div>
-
-            <div className="flex flex-row flex-wrap justify-center gap-2">
-              {playersByPosition("Midfielder").map((player) => (
-                <div
-                  key={player.id}
-                  className="flex flex-col items-center text-center gap-2"
-                >
-                  <div className="flex flex-row-reverse gap-2">
-                    <Button
-                      title="Spieler entfernen"
-                      type="button"
-                      size="icon"
-                      variant="destructive"
-                      className="cursor-pointer"
-                      onClick={() => removePlayer(player.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                    <PlayerCombobox
-                      players={players.filter(
-                        (p) =>
-                          p.id === player.id ||
-                          !selectedPlayerIds.includes(p.id)
-                      )}
-                      value={player}
-                      onSelect={(p) => {
-                        removePlayer(player.id);
-                        addPlayerToPosition(p, "Midfielder");
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex justify-center">
-              {addingMidfielder && (
-                <div className="flex flex-row-reverse gap-2">
-                  <Button
-                    title="Hinzufügen abbrechen"
-                    type="button"
-                    size="icon"
-                    variant="destructive"
-                    className="cursor-pointer"
-                    onClick={() => setAddingMidfielder(false)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                  <PlayerCombobox
-                    players={players.filter(
-                      (p) => !selectedPlayerIds.includes(p.id)
-                    )}
-                    onSelect={(player) => {
-                      addPlayerToPosition(player, "Midfielder");
-                      setAddingMidfielder(false);
-                    }}
-                  />
-                </div>
-              )}
-            </div>
+            {renderPlayerSection(
+              "Mittelfeld",
+              "Midfielder",
+              addingMidfielder,
+              setAddingMidfielder
+            )}
 
             {/* defender section */}
 
-            <div className="flex items-center justify-center gap-2">
-              <span className="font-semibold">Verteidigung</span>
-              <Button
-                title="Spieler hinzufügen"
-                type="button"
-                className="cursor-pointer"
-                onClick={() => setAddingDefender(true)}
-              >
-                <UserPlus className="w-4 h-4" />
-              </Button>
-            </div>
-
-            <div className="flex flex-row flex-wrap justify-center gap-2">
-              {playersByPosition("Defender").map((player) => (
-                <div
-                  key={player.id}
-                  className="flex flex-col items-center text-center gap-2"
-                >
-                  <div className="flex flex-row-reverse gap-2">
-                    <Button
-                      title="Spieler entfernen"
-                      type="button"
-                      size="icon"
-                      variant="destructive"
-                      className="cursor-pointer"
-                      onClick={() => removePlayer(player.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                    <PlayerCombobox
-                      players={players.filter(
-                        (p) =>
-                          p.id === player.id ||
-                          !selectedPlayerIds.includes(p.id)
-                      )}
-                      value={player}
-                      onSelect={(p) => {
-                        removePlayer(player.id);
-                        addPlayerToPosition(p, "Defender");
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex justify-center">
-              {addingDefender && (
-                <div className="flex flex-row-reverse gap-2">
-                  <Button
-                    title="Hinzufügen abbrechen"
-                    type="button"
-                    size="icon"
-                    variant="destructive"
-                    className="cursor-pointer"
-                    onClick={() => setAddingDefender(false)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                  <PlayerCombobox
-                    players={players.filter(
-                      (p) => !selectedPlayerIds.includes(p.id)
-                    )}
-                    onSelect={(player) => {
-                      addPlayerToPosition(player, "Defender");
-                      setAddingDefender(false);
-                    }}
-                  />
-                </div>
-              )}
-            </div>
+            {renderPlayerSection(
+              "Verteidigung",
+              "Defender",
+              addingDefender,
+              setAddingDefender
+            )}
 
             {/* goalkeeper section */}
 
-            <div className="flex items-center justify-center gap-2">
-              <span className="font-semibold">Torwart</span>
-              <Button
-                title="Spieler hinzufügen"
-                type="button"
-                className="cursor-pointer"
-                onClick={() => setAddingGoalkeeper(true)}
-              >
-                <UserPlus className="w-4 h-4" />
-              </Button>
-            </div>
-
-            <div className="flex flex-row flex-wrap justify-center gap-2">
-              {playersByPosition("Goalkeeper").map((player) => (
-                <div
-                  key={player.id}
-                  className="flex flex-col items-center text-center gap-2"
-                >
-                  <div className="flex flex-row-reverse gap-2">
-                    <Button
-                      title="Spieler entfernen"
-                      type="button"
-                      size="icon"
-                      variant="destructive"
-                      className="cursor-pointer"
-                      onClick={() => removePlayer(player.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                    <PlayerCombobox
-                      players={players.filter(
-                        (p) =>
-                          p.id === player.id ||
-                          !selectedPlayerIds.includes(p.id)
-                      )}
-                      value={player}
-                      onSelect={(p) => {
-                        removePlayer(player.id);
-                        addPlayerToPosition(p, "Goalkeeper");
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex justify-center">
-              {addingGoalkeeper && (
-                <div className="flex flex-row-reverse gap-2">
-                  <Button
-                    title="Hinzufügen abbrechen"
-                    type="button"
-                    size="icon"
-                    variant="destructive"
-                    className="cursor-pointer"
-                    onClick={() => setAddingGoalkeeper(false)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                  <PlayerCombobox
-                    players={players.filter(
-                      (p) => !selectedPlayerIds.includes(p.id)
-                    )}
-                    onSelect={(player) => {
-                      addPlayerToPosition(player, "Goalkeeper");
-                      setAddingGoalkeeper(false);
-                    }}
-                  />
-                </div>
-              )}
-            </div>
+            {renderPlayerSection(
+              "Torwart",
+              "Goalkeeper",
+              addingGoalkeeper,
+              setAddingGoalkeeper
+            )}
           </div>
 
           {/* right side the trainers and backups */}
           <div className="flex flex-col gap-4 border-2 w-1/3">
             {/* trainer section */}
-            <div className="flex items-center justify-center gap-2 pt-4">
-              <span className="font-semibold">Trainer</span>
-              <Button
-                title="Trainer hinzufügen"
-                type="button"
-                className="cursor-pointer"
-                onClick={() => setAddingTrainer(true)}
-              >
-                <UserPlus className="w-4 h-4" />
-              </Button>
-            </div>
 
-            <div className="flex flex-row flex-wrap justify-center gap-2">
-              {squad.trainers.map((trainer) => (
-                <div
-                  key={trainer.id}
-                  className="flex flex-col items-center text-center gap-2"
-                >
-                  <div className="flex flex-row-reverse gap-2">
-                    <Button
-                      title="Trainer entfernen"
-                      type="button"
-                      size="icon"
-                      variant="destructive"
-                      className="cursor-pointer"
-                      onClick={() => removeTrainer(trainer.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                    <TrainerCombobox
-                      trainers={trainers.filter(
-                        (t) =>
-                          t.id === trainer.id ||
-                          !squad.trainers.some((bt) => bt.id === t.id)
-                      )}
-                      value={trainer}
-                      onSelect={(t) => {
-                        removeTrainer(trainer.id);
-                        addTrainer(t);
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex justify-center">
-              {addingTrainer && (
-                <div className="flex flex-row-reverse gap-2">
-                  <Button
-                    title="Hinzufügen abbrechen"
-                    type="button"
-                    size="icon"
-                    variant="destructive"
-                    className="cursor-pointer"
-                    onClick={() => setAddingGoalkeeper(false)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                  <TrainerCombobox
-                    trainers={trainers.filter(
-                      (t) => !squad.trainers.some((b) => b.id === t.id)
-                    )}
-                    onSelect={(trainer) => {
-                      addTrainer(trainer);
-                      setAddingTrainer(false);
-                    }}
-                  />
-                </div>
-              )}
-            </div>
+            {renderTrainerSection("Trainer", addingTrainer, setAddingTrainer)}
 
             {/* backup section */}
 
-            <div className="flex items-center justify-center gap-2">
-              <span className="font-semibold">Ersatz</span>
-              <Button
-                title="Spieler hinzufügen"
-                type="button"
-                className="cursor-pointer"
-                onClick={() => setAddingBackup(true)}
-              >
-                <UserPlus className="w-4 h-4" />
-              </Button>
-            </div>
-
-            <div className="flex flex-row flex-wrap justify-center gap-2">
-              {playersByPosition("Backup").map((player) => (
-                <div
-                  key={player.id}
-                  className="flex flex-col items-center text-center gap-2"
-                >
-                  <div className="flex flex-row-reverse gap-2">
-                    <Button
-                      title="Spieler entfernen"
-                      type="button"
-                      size="icon"
-                      variant="destructive"
-                      className="cursor-pointer"
-                      onClick={() => removePlayer(player.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                    <PlayerCombobox
-                      players={players.filter(
-                        (p) =>
-                          p.id === player.id ||
-                          !selectedPlayerIds.includes(p.id)
-                      )}
-                      value={player}
-                      onSelect={(p) => {
-                        removePlayer(player.id);
-                        addPlayerToPosition(p, "Backup");
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="flex justify-center">
-              {addingBackup && (
-                <div className="flex flex-row-reverse gap-2">
-                  <Button
-                    title="Hinzufügen abbrechen"
-                    type="button"
-                    size="icon"
-                    variant="destructive"
-                    className="cursor-pointer"
-                    onClick={() => setAddingBackup(false)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                  <PlayerCombobox
-                    players={players.filter(
-                      (p) => !selectedPlayerIds.includes(p.id)
-                    )}
-                    onSelect={(player) => {
-                      addPlayerToPosition(player, "Backup");
-                      setAddingBackup(false);
-                    }}
-                  />
-                </div>
-              )}
-            </div>
+            {renderPlayerSection(
+              "Ersatz",
+              "Backup",
+              addingBackup,
+              setAddingBackup
+            )}
           </div>
         </div>
       </CardContent>

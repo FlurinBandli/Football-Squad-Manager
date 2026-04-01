@@ -17,9 +17,9 @@ import { Button } from "@/components/ui/button";
 import { CirclePlus, Pencil } from "lucide-react";
 import { Trainer } from "@/types";
 import DeleteTrainerButton from "@/app/admin/trainers/components/delete-trainer-button";
-
 import { useState } from "react";
 import TrainerForm from "@/app/admin/trainers/components/trainer-form";
+import { Gender } from "@/types";
 
 export default function TrainersClient({ trainers }: { trainers: Trainer[] }) {
   const [open, setOpen] = useState(false);
@@ -27,6 +27,11 @@ export default function TrainersClient({ trainers }: { trainers: Trainer[] }) {
   const [selectedTrainer, setSelectedTrainer] = useState<Trainer | undefined>(
     undefined
   );
+  const genderMap: Record<Gender, string> = {
+    Male: "Männlich",
+    Female: "Weiblich",
+    Other: "Divers",
+  };
 
   // Handler function to open the TrainerForm in create mode
   function handleCreate() {
@@ -79,7 +84,7 @@ export default function TrainersClient({ trainers }: { trainers: Trainer[] }) {
               <TableRow key={trainer.id}>
                 <TableCell>{trainer.firstName}</TableCell>
                 <TableCell>{trainer.lastName}</TableCell>
-                <TableCell>{trainer.gender}</TableCell>
+                <TableCell>{genderMap[trainer.gender]}</TableCell>
 
                 <TableCell>
                   <Button

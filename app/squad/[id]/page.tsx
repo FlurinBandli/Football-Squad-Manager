@@ -34,7 +34,7 @@ export default async function ViewSquad({
 
   // Define the positions to be displayed on the football pitch with their corresponding labels
   const fieldPositions: { key: Position; label: string }[] = [
-    { key: "Striker", label: "Stürmer" },
+    { key: "Striker", label: "Sturm" },
     { key: "Midfielder", label: "Mittelfeld" },
     { key: "Defender", label: "Verteidigung" },
     { key: "Goalkeeper", label: "Torwart" },

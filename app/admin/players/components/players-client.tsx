@@ -19,6 +19,7 @@ import { Player } from "@/types";
 import DeletePlayerButton from "@/app/admin/players/components/delete-player-button";
 import PlayerForm from "@/app/admin/players/components/player-form";
 import { useState } from "react";
+import { Gender } from "@/types";
 
 export default function PlayersClient({ players }: { players: Player[] }) {
   const [open, setOpen] = useState(false);
@@ -26,6 +27,12 @@ export default function PlayersClient({ players }: { players: Player[] }) {
   const [selectedPlayer, setSelectedPlayer] = useState<Player | undefined>(
     undefined
   );
+
+  const genderMap: Record<Gender, string> = {
+    Male: "Männlich",
+    Female: "Weiblich",
+    Other: "Divers",
+  };
 
   function handleCreate() {
     setMode("create");
@@ -76,7 +83,7 @@ export default function PlayersClient({ players }: { players: Player[] }) {
               <TableRow key={player.id}>
                 <TableCell>{player.firstName}</TableCell>
                 <TableCell>{player.lastName}</TableCell>
-                <TableCell>{player.gender}</TableCell>
+                <TableCell>{genderMap[player.gender]}</TableCell>
 
                 <TableCell>
                   <Button
