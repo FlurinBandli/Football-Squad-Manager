@@ -11,7 +11,11 @@ import { redirect } from "next/navigation";
 import { Trainer } from "@/types";
 import TrainersClient from "@/app/admin/trainers/components/trainers-client";
 
-export default async function Trainers() {
+type TrainersPageProps = {
+  searchParams: Promise<{ query?: string; page?: string }>;
+};
+
+export default async function Trainers({ searchParams }: TrainersPageProps) {
   // Check if the user is authenticated, if not redirect to login page
   const session = await auth();
   if (!session) redirect("/login");
@@ -24,9 +28,16 @@ export default async function Trainers() {
     return <div className="p-4 text-destructive">Backend nicht erreichbar</div>;
   }
 
+  const params = await searchParams;
+  const query = params.query?.toLowerCase() ?? "";
+
+  const filteredTrainers = trainers.filter((trainer) =>
+    `${trainer.firstName} ${trainer.lastName}`.toLowerCase().includes(query)
+  );
+
   return (
     <div className="p-4">
-      <TrainersClient trainers={trainers} />
+      <TrainersClient trainers={filteredTrainers} />
     </div>
   );
 }

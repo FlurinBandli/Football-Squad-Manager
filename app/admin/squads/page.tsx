@@ -23,8 +23,13 @@ import DeleteSquadButton from "@/app/admin/squads/components/delete-squad-button
 import { encodeSquadId } from "@/lib/hashids";
 import { CirclePlus } from "lucide-react";
 import IconTooltipButton from "@/app/admin/components/icon-tooltip-button";
+import AdminSearchInput from "@/app/admin/components/admin-search-input";
 
-export default async function SquadsPage() {
+type SquadsPageProps = {
+  searchParams: Promise<{ query?: string; page?: string }>;
+};
+
+export default async function SquadsPage({ searchParams }: SquadsPageProps) {
   // Check if the user is authenticated, if not redirect to login page
   const session = await auth();
   if (!session) redirect("/login");
@@ -37,14 +42,23 @@ export default async function SquadsPage() {
     return <div className="p-4 text-destructive">Backend nicht erreichbar</div>;
   }
 
+  const params = await searchParams;
+  const query = params.query?.toLowerCase() ?? "";
+
+  const filteredSquads = squads.filter((squad) =>
+    squad.name.toLowerCase().includes(query)
+  );
+
   return (
     <div className="p-4">
-      <Button className="flex justify-center mb-4" asChild>
-        <Link href="/admin/squads/new">
-          {" "}
-          <CirclePlus className="w-4 h-4 mr-2" /> Neues Team erstellen
-        </Link>
-      </Button>
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <AdminSearchInput placeholder="Nach Teamname suchen..." />
+        <Button asChild className="w-fit cursor-pointer">
+          <Link href="/admin/squads/new">
+            <CirclePlus className="w-4 h-4 mr-2" /> Neues Team erstellen
+          </Link>
+        </Button>
+      </div>
 
       {/* Table displaying the list of squads with options to view, edit or delete each squad */}
       <Table className="w-full">
@@ -61,7 +75,7 @@ export default async function SquadsPage() {
         </TableHeader>
 
         <TableBody>
-          {squads.length === 0 ? (
+          {filteredSquads.length === 0 ? (
             <TableRow>
               <TableCell
                 colSpan={7}
@@ -71,7 +85,7 @@ export default async function SquadsPage() {
               </TableCell>
             </TableRow>
           ) : (
-            squads.map((squad) => (
+            filteredSquads.map((squad) => (
               <TableRow key={squad.id}>
                 <TableCell>{squad.id}</TableCell>
                 <TableCell>{squad.name}</TableCell>

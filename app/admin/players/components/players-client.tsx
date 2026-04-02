@@ -21,6 +21,7 @@ import PlayerForm from "@/app/admin/players/components/player-form";
 import { useState } from "react";
 import { Gender } from "@/types";
 import IconTooltipButton from "@/app/admin/components/icon-tooltip-button";
+import AdminSearchInput from "@/app/admin/components/admin-search-input";
 
 export default function PlayersClient({ players }: { players: Player[] }) {
   const [open, setOpen] = useState(false);
@@ -49,13 +50,13 @@ export default function PlayersClient({ players }: { players: Player[] }) {
 
   return (
     <div>
-      <Button
-        className="flex justify-center w-full mb-4 cursor-pointer"
-        onClick={handleCreate}
-      >
-        <CirclePlus className="w-4 h-4 mr-2" />
-        Neuen Spieler erstellen
-      </Button>
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <AdminSearchInput placeholder="Nach Spielernamen suchen..." />
+        <Button className="w-fit cursor-pointer" onClick={handleCreate}>
+          <CirclePlus className="w-4 h-4 mr-2" />
+          Neuen Spieler erstellen
+        </Button>
+      </div>
 
       {/* Table displaying the list of players with options to edit or delete each player */}
       <Table className="w-full">

@@ -21,6 +21,7 @@ import IconTooltipButton from "@/app/admin/components/icon-tooltip-button";
 import { useState } from "react";
 import TrainerForm from "@/app/admin/trainers/components/trainer-form";
 import { Gender } from "@/types";
+import AdminSearchInput from "@/app/admin/components/admin-search-input";
 
 export default function TrainersClient({ trainers }: { trainers: Trainer[] }) {
   const [open, setOpen] = useState(false);
@@ -50,13 +51,13 @@ export default function TrainersClient({ trainers }: { trainers: Trainer[] }) {
 
   return (
     <div>
-      <Button
-        className="flex justify-center w-full mb-4 cursor-pointer"
-        onClick={handleCreate}
-      >
-        <CirclePlus className="w-4 h-4 mr-2" />
-        Neuen Trainer erstellen
-      </Button>
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <AdminSearchInput placeholder="Nach Trainernamen suchen..." />
+        <Button className="w-fit cursor-pointer" onClick={handleCreate}>
+          <CirclePlus className="w-4 h-4 mr-2" />
+          Neuen Trainer erstellen
+        </Button>
+      </div>
 
       {/* Table displaying the list of trainers with options to edit or delete each trainer */}
       <Table className="w-full">
