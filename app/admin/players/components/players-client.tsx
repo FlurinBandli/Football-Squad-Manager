@@ -20,6 +20,7 @@ import DeletePlayerButton from "@/app/admin/players/components/delete-player-but
 import PlayerForm from "@/app/admin/players/components/player-form";
 import { useState } from "react";
 import { Gender } from "@/types";
+import IconTooltipButton from "@/app/admin/components/icon-tooltip-button";
 
 export default function PlayersClient({ players }: { players: Player[] }) {
   const [open, setOpen] = useState(false);
@@ -86,14 +87,15 @@ export default function PlayersClient({ players }: { players: Player[] }) {
                 <TableCell>{genderMap[player.gender]}</TableCell>
 
                 <TableCell>
-                  <Button
-                    title="Spieler bearbeiten"
+                  <IconTooltipButton
+                    tooltip="Spieler bearbeiten"
+                    tooltipSide="left"
                     type="button"
                     className="cursor-pointer"
                     onClick={() => handleEdit(player)}
                   >
                     <Pencil />
-                  </Button>
+                  </IconTooltipButton>
                 </TableCell>
                 <TableCell>
                   <DeletePlayerButton id={player.id} />

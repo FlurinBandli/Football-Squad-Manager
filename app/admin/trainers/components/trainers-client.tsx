@@ -17,6 +17,7 @@ import { Button } from "@/components/ui/button";
 import { CirclePlus, Pencil } from "lucide-react";
 import { Trainer } from "@/types";
 import DeleteTrainerButton from "@/app/admin/trainers/components/delete-trainer-button";
+import IconTooltipButton from "@/app/admin/components/icon-tooltip-button";
 import { useState } from "react";
 import TrainerForm from "@/app/admin/trainers/components/trainer-form";
 import { Gender } from "@/types";
@@ -87,14 +88,15 @@ export default function TrainersClient({ trainers }: { trainers: Trainer[] }) {
                 <TableCell>{genderMap[trainer.gender]}</TableCell>
 
                 <TableCell>
-                  <Button
-                    title="Trainer bearbeiten"
+                  <IconTooltipButton
+                    tooltip="Trainer bearbeiten"
+                    tooltipSide="left"
                     type="button"
                     className="cursor-pointer"
                     onClick={() => handleEdit(trainer)}
                   >
                     <Pencil />
-                  </Button>
+                  </IconTooltipButton>
                 </TableCell>
                 <TableCell>
                   <DeleteTrainerButton id={trainer.id} />

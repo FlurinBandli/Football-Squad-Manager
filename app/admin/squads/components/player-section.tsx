@@ -1,9 +1,9 @@
 "use client";
 
 import { Player, Position } from "@/types";
-import { Button } from "@/components/ui/button";
 import { UserPlus, Trash2 } from "lucide-react";
 import PlayerCombobox from "@/app/admin/squads/components/player-combobox";
+import IconTooltipButton from "@/app/admin/components/icon-tooltip-button";
 
 export default function PlayerSection({
   title,
@@ -34,14 +34,14 @@ export default function PlayerSection({
     <>
       <div className="flex items-center justify-center gap-2 pt-4">
         <span className="font-semibold">{title}</span>
-        <Button
-          title="Spieler hinzufügen"
+        <IconTooltipButton
+          tooltip="Spieler hinzufügen"
           type="button"
           className="cursor-pointer"
           onClick={() => setIsAdding(true)}
         >
           <UserPlus className="w-4 h-4" />
-        </Button>
+        </IconTooltipButton>
       </div>
 
       <div className="flex flex-row flex-wrap justify-center gap-2">
@@ -51,8 +51,8 @@ export default function PlayerSection({
             className="flex flex-col items-center text-center gap-2"
           >
             <div className="flex flex-row-reverse gap-2">
-              <Button
-                title="Spieler entfernen"
+              <IconTooltipButton
+                tooltip="Spieler entfernen"
                 type="button"
                 size="icon"
                 variant="destructive"
@@ -60,7 +60,7 @@ export default function PlayerSection({
                 onClick={() => playerActions.remove(player.id)}
               >
                 <Trash2 className="h-4 w-4" />
-              </Button>
+              </IconTooltipButton>
               <PlayerCombobox
                 players={availablePlayers(player.id)}
                 value={player}
@@ -76,8 +76,8 @@ export default function PlayerSection({
       <div className="flex justify-center">
         {isAdding && (
           <div className="flex flex-row-reverse gap-2">
-            <Button
-              title="Hinzufügen abbrechen"
+            <IconTooltipButton
+              tooltip="Hinzufügen abbrechen"
               type="button"
               size="icon"
               variant="destructive"
@@ -85,7 +85,7 @@ export default function PlayerSection({
               onClick={() => setIsAdding(false)}
             >
               <Trash2 className="h-4 w-4" />
-            </Button>
+            </IconTooltipButton>
             <PlayerCombobox
               players={availablePlayers()}
               onSelect={(player) => {

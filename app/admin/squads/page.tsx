@@ -19,9 +19,10 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Eye, Pencil } from "lucide-react";
 import { Squad } from "@/types";
-import DeleteSquadButton from "./components/delete-squad-button";
+import DeleteSquadButton from "@/app/admin/squads/components/delete-squad-button";
 import { encodeSquadId } from "@/lib/hashids";
 import { CirclePlus } from "lucide-react";
+import IconTooltipButton from "@/app/admin/components/icon-tooltip-button";
 
 export default async function SquadsPage() {
   // Check if the user is authenticated, if not redirect to login page
@@ -79,21 +80,31 @@ export default async function SquadsPage() {
                   {new Date(squad.date).toLocaleDateString("de-CH")}
                 </TableCell>
                 <TableCell className="text-center">
-                  <Button variant="outline" title="Team ansehen" asChild>
+                  <IconTooltipButton
+                    variant="outline"
+                    tooltip="Team ansehen"
+                    tooltipSide="left"
+                    asChild
+                  >
                     <Link
                       href={`/squad/${encodeSquadId(squad.id)}`}
                       target="_blank"
                     >
                       <Eye />
                     </Link>
-                  </Button>
+                  </IconTooltipButton>
                 </TableCell>
                 <TableCell className="text-center">
-                  <Button variant="default" title="Team bearbeiten" asChild>
+                  <IconTooltipButton
+                    variant="default"
+                    tooltip="Team bearbeiten"
+                    tooltipSide="left"
+                    asChild
+                  >
                     <Link href={`/admin/squads/${squad.id}/edit`}>
                       <Pencil />
                     </Link>
-                  </Button>
+                  </IconTooltipButton>
                 </TableCell>
                 <TableCell className="text-center">
                   <DeleteSquadButton id={squad.id} />
