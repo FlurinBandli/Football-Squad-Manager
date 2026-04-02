@@ -9,16 +9,18 @@ export default function TrainerSection({
   title,
   trainersInSquad,
   availableTrainers,
-  addTrainer,
-  removeTrainer,
+  trainerActions,
   isAdding,
   setIsAdding,
 }: {
   title: string;
   trainersInSquad: Trainer[];
   availableTrainers: (currentTrainerId?: number) => Trainer[];
-  addTrainer: (trainer: Trainer) => void;
-  removeTrainer: (trainerId: number) => void;
+  trainerActions: {
+    add: (trainer: Trainer) => void;
+    remove: (trainerId: number) => void;
+    replace: (oldTrainerId: number, newTrainer: Trainer) => void;
+  };
   isAdding: boolean;
   setIsAdding: (value: boolean) => void;
 }) {
@@ -48,7 +50,7 @@ export default function TrainerSection({
                 size="icon"
                 variant="destructive"
                 className="cursor-pointer"
-                onClick={() => removeTrainer(trainer.id)}
+                onClick={() => trainerActions.remove(trainer.id)}
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
@@ -56,8 +58,7 @@ export default function TrainerSection({
                 trainers={availableTrainers(trainer.id)}
                 value={trainer}
                 onSelect={(t) => {
-                  removeTrainer(trainer.id);
-                  addTrainer(t);
+                  trainerActions.replace(trainer.id, t);
                 }}
               />
             </div>
@@ -80,7 +81,7 @@ export default function TrainerSection({
             <TrainerCombobox
               trainers={availableTrainers()}
               onSelect={(trainer) => {
-                addTrainer(trainer);
+                trainerActions.add(trainer);
                 setIsAdding(false);
               }}
             />

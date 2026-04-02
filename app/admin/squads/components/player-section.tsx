@@ -10,8 +10,7 @@ export default function PlayerSection({
   position,
   playersInPosition,
   availablePlayers,
-  addPlayerToPosition,
-  removePlayer,
+  playerActions,
   isAdding,
   setIsAdding,
 }: {
@@ -19,8 +18,15 @@ export default function PlayerSection({
   position: Position;
   playersInPosition: Player[];
   availablePlayers: (currentPlayerId?: number) => Player[];
-  addPlayerToPosition: (player: Player, position: Position) => void;
-  removePlayer: (playerId: number) => void;
+  playerActions: {
+    add: (player: Player, position: Position) => void;
+    remove: (playerId: number) => void;
+    replace: (
+      oldPlayerId: number,
+      newPlayer: Player,
+      position: Position
+    ) => void;
+  };
   isAdding: boolean;
   setIsAdding: (value: boolean) => void;
 }) {
@@ -51,7 +57,7 @@ export default function PlayerSection({
                 size="icon"
                 variant="destructive"
                 className="cursor-pointer"
-                onClick={() => removePlayer(player.id)}
+                onClick={() => playerActions.remove(player.id)}
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
@@ -59,8 +65,7 @@ export default function PlayerSection({
                 players={availablePlayers(player.id)}
                 value={player}
                 onSelect={(p) => {
-                  removePlayer(player.id);
-                  addPlayerToPosition(p, position);
+                  playerActions.replace(player.id, p, position);
                 }}
               />
             </div>
@@ -84,7 +89,7 @@ export default function PlayerSection({
             <PlayerCombobox
               players={availablePlayers()}
               onSelect={(player) => {
-                addPlayerToPosition(player, position);
+                playerActions.add(player, position);
                 setIsAdding(false);
               }}
             />

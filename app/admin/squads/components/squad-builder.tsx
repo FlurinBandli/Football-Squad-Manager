@@ -58,21 +58,30 @@ export default function SquadBuilder({
       .filter((sp) => sp.position === position)
       .map((sp) => sp.player);
 
-  const addPlayerToPosition = (player: Player, position: Position) => {
-    setSquad((prev) => {
-      if (prev.players.some((sp) => sp.player.id === player.id)) return prev;
-      return {
+  const playerActions = {
+    add: (player: Player, position: Position) => {
+      setSquad((prev) => {
+        if (prev.players.some((sp) => sp.player.id === player.id)) return prev;
+        return {
+          ...prev,
+          players: [...prev.players, { player, position }],
+        };
+      });
+    },
+    remove: (playerId: number) => {
+      setSquad((prev) => ({
         ...prev,
-        players: [...prev.players, { player, position }],
-      };
-    });
-  };
-
-  const removePlayer = (playerId: number) => {
-    setSquad((prev) => ({
-      ...prev,
-      players: prev.players.filter((sp) => sp.player.id !== playerId),
-    }));
+        players: prev.players.filter((sp) => sp.player.id !== playerId),
+      }));
+    },
+    replace: (oldPlayerId: number, newPlayer: Player, position: Position) => {
+      setSquad((prev) => ({
+        ...prev,
+        players: prev.players.map((sp) =>
+          sp.player.id === oldPlayerId ? { player: newPlayer, position } : sp
+        ),
+      }));
+    },
   };
 
   const availablePlayers = (currentPlayerId?: number) =>
@@ -81,21 +90,32 @@ export default function SquadBuilder({
       return !selectedPlayerIds.includes(p.id);
     });
 
-  const addTrainer = (trainer: Trainer) => {
-    setSquad((prev) => {
-      if (prev.trainers.some((t) => t.id === trainer.id)) return prev;
-      return {
-        ...prev,
-        trainers: [...prev.trainers, trainer],
-      };
-    });
-  };
+  const trainerActions = {
+    add: (trainer: Trainer) => {
+      setSquad((prev) => {
+        if (prev.trainers.some((t) => t.id === trainer.id)) return prev;
+        return {
+          ...prev,
+          trainers: [...prev.trainers, trainer],
+        };
+      });
+    },
 
-  const removeTrainer = (trainerId: number) => {
-    setSquad((prev) => ({
-      ...prev,
-      trainers: prev.trainers.filter((t) => t.id !== trainerId),
-    }));
+    remove: (trainerId: number) => {
+      setSquad((prev) => ({
+        ...prev,
+        trainers: prev.trainers.filter((t) => t.id !== trainerId),
+      }));
+    },
+
+    replace: (oldTrainerId: number, newTrainer: Trainer) => {
+      setSquad((prev) => ({
+        ...prev,
+        trainers: prev.trainers.map((t) =>
+          t.id === oldTrainerId ? newTrainer : t
+        ),
+      }));
+    },
   };
 
   const availableTrainers = (currentTrainerId?: number) =>
@@ -119,8 +139,7 @@ export default function SquadBuilder({
               position="Striker"
               playersInPosition={playersByPosition("Striker")}
               availablePlayers={availablePlayers}
-              addPlayerToPosition={addPlayerToPosition}
-              removePlayer={removePlayer}
+              playerActions={playerActions}
               isAdding={addingSections.Striker}
               setIsAdding={(value) => setSectionAdding("Striker", value)}
             />
@@ -131,8 +150,7 @@ export default function SquadBuilder({
               position="Midfielder"
               playersInPosition={playersByPosition("Midfielder")}
               availablePlayers={availablePlayers}
-              addPlayerToPosition={addPlayerToPosition}
-              removePlayer={removePlayer}
+              playerActions={playerActions}
               isAdding={addingSections.Midfielder}
               setIsAdding={(value) => setSectionAdding("Midfielder", value)}
             />
@@ -143,8 +161,7 @@ export default function SquadBuilder({
               position="Defender"
               playersInPosition={playersByPosition("Defender")}
               availablePlayers={availablePlayers}
-              addPlayerToPosition={addPlayerToPosition}
-              removePlayer={removePlayer}
+              playerActions={playerActions}
               isAdding={addingSections.Defender}
               setIsAdding={(value) => setSectionAdding("Defender", value)}
             />
@@ -155,8 +172,7 @@ export default function SquadBuilder({
               position="Goalkeeper"
               playersInPosition={playersByPosition("Goalkeeper")}
               availablePlayers={availablePlayers}
-              addPlayerToPosition={addPlayerToPosition}
-              removePlayer={removePlayer}
+              playerActions={playerActions}
               isAdding={addingSections.Goalkeeper}
               setIsAdding={(value) => setSectionAdding("Goalkeeper", value)}
             />
@@ -169,8 +185,7 @@ export default function SquadBuilder({
               title="Trainer"
               trainersInSquad={squad.trainers}
               availableTrainers={availableTrainers}
-              addTrainer={addTrainer}
-              removeTrainer={removeTrainer}
+              trainerActions={trainerActions}
               isAdding={addingSections.Trainer}
               setIsAdding={(value) => setSectionAdding("Trainer", value)}
             />
@@ -181,8 +196,7 @@ export default function SquadBuilder({
               position="Backup"
               playersInPosition={playersByPosition("Backup")}
               availablePlayers={availablePlayers}
-              addPlayerToPosition={addPlayerToPosition}
-              removePlayer={removePlayer}
+              playerActions={playerActions}
               isAdding={addingSections.Backup}
               setIsAdding={(value) => setSectionAdding("Backup", value)}
             />

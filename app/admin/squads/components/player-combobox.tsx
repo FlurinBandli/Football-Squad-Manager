@@ -31,18 +31,20 @@ export default function PlayerCombobox({
       <Combobox
         items={players}
         value={value}
-        onValueChange={(player) => player && onSelect(player)}
+        onValueChange={(player) => {
+          if (player && typeof player !== "string") {
+            onSelect(player);
+          }
+        }}
         /**
          * Defines how players are displayed as text in the combobox input.
          */
-        itemToStringValue={(player: Player) =>
+        itemToStringLabel={(player: Player) =>
           `${player.firstName} ${player.lastName}`
         }
+        itemToStringValue={(player: Player) => String(player.id)}
       >
-        <ComboboxInput
-          placeholder="Spieler auswählen"
-          value={value ? `${value.firstName} ${value.lastName}` : ""}
-        />
+        <ComboboxInput placeholder="Spieler auswählen" />
         <ComboboxContent>
           <ComboboxEmpty>Keine Spieler gefunden</ComboboxEmpty>
           <ComboboxList>
