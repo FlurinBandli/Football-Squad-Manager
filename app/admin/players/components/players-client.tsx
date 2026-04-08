@@ -22,8 +22,17 @@ import { useState } from "react";
 import { Gender } from "@/types";
 import IconTooltipButton from "@/app/admin/components/icon-tooltip-button";
 import AdminSearchInput from "@/app/admin/components/admin-search-input";
+import AdminPagination from "@/app/admin/components/admin-pagination";
 
-export default function PlayersClient({ players }: { players: Player[] }) {
+export default function PlayersClient({
+  players,
+  totalPages,
+  currentPage,
+}: {
+  players: Player[];
+  totalPages: number;
+  currentPage: number;
+}) {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"create" | "edit">("create");
   const [selectedPlayer, setSelectedPlayer] = useState<Player | undefined>(
@@ -113,6 +122,7 @@ export default function PlayersClient({ players }: { players: Player[] }) {
         player={selectedPlayer}
         mode={mode}
       />
+      <AdminPagination totalPages={totalPages} currentPage={currentPage} />
     </div>
   );
 }

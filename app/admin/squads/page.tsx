@@ -24,6 +24,7 @@ import { encodeSquadId } from "@/lib/hashids";
 import { CirclePlus } from "lucide-react";
 import IconTooltipButton from "@/app/admin/components/icon-tooltip-button";
 import AdminSearchInput from "@/app/admin/components/admin-search-input";
+import AdminPagination from "@/app/admin/components/admin-pagination";
 
 type SquadsPageProps = {
   searchParams: Promise<{ query?: string; page?: string }>;
@@ -44,9 +45,18 @@ export default async function SquadsPage({ searchParams }: SquadsPageProps) {
 
   const params = await searchParams;
   const query = params.query?.toLowerCase() ?? "";
+  const currentPage = Number(params.page ?? "1");
+  const itemsPerPage = 10;
 
   const filteredSquads = squads.filter((squad) =>
     squad.name.toLowerCase().includes(query)
+  );
+
+  const totalPages = Math.ceil(filteredSquads.length / itemsPerPage);
+
+  const paginatedSquads = filteredSquads.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
   );
 
   return (
@@ -85,7 +95,7 @@ export default async function SquadsPage({ searchParams }: SquadsPageProps) {
               </TableCell>
             </TableRow>
           ) : (
-            filteredSquads.map((squad) => (
+            paginatedSquads.map((squad) => (
               <TableRow key={squad.id}>
                 <TableCell>{squad.id}</TableCell>
                 <TableCell>{squad.name}</TableCell>
@@ -128,6 +138,8 @@ export default async function SquadsPage({ searchParams }: SquadsPageProps) {
           )}
         </TableBody>
       </Table>
+
+      <AdminPagination currentPage={currentPage} totalPages={totalPages} />
     </div>
   );
 }

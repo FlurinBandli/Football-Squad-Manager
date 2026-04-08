@@ -30,14 +30,26 @@ export default async function Trainers({ searchParams }: TrainersPageProps) {
 
   const params = await searchParams;
   const query = params.query?.toLowerCase() ?? "";
+  const currentPage = Number(params.page ?? "1");
+  const itemsPerPage = 10;
 
   const filteredTrainers = trainers.filter((trainer) =>
     `${trainer.firstName} ${trainer.lastName}`.toLowerCase().includes(query)
   );
 
+  const totalPages = Math.ceil(filteredTrainers.length / itemsPerPage);
+  const paginatedTrainers = filteredTrainers.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <div className="p-4">
-      <TrainersClient trainers={filteredTrainers} />
+      <TrainersClient
+        trainers={paginatedTrainers}
+        totalPages={totalPages}
+        currentPage={currentPage}
+      />
     </div>
   );
 }

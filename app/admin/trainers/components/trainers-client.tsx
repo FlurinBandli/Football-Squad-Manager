@@ -22,8 +22,17 @@ import { useState } from "react";
 import TrainerForm from "@/app/admin/trainers/components/trainer-form";
 import { Gender } from "@/types";
 import AdminSearchInput from "@/app/admin/components/admin-search-input";
+import AdminPagination from "@/app/admin/components/admin-pagination";
 
-export default function TrainersClient({ trainers }: { trainers: Trainer[] }) {
+export default function TrainersClient({
+  trainers,
+  totalPages,
+  currentPage,
+}: {
+  trainers: Trainer[];
+  totalPages: number;
+  currentPage: number;
+}) {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"create" | "edit">("create");
   const [selectedTrainer, setSelectedTrainer] = useState<Trainer | undefined>(
@@ -114,6 +123,8 @@ export default function TrainersClient({ trainers }: { trainers: Trainer[] }) {
         trainer={selectedTrainer}
         mode={mode}
       />
+
+      <AdminPagination totalPages={totalPages} currentPage={currentPage} />
     </div>
   );
 }
