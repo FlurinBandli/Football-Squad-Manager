@@ -9,7 +9,20 @@
  * @returns A promise that resolves to the JWT access token as a string.
  * @throws An error if authentication fails.
  */
+
+let cachedToken: string | null = null;
+let tokenExpiration: number | null = null;
+
 export async function GetNestToken(): Promise<string> {
+  // Check if we have a cached token that is still valid (with a 1-minute buffer)
+  if (
+    cachedToken &&
+    tokenExpiration &&
+    Date.now() < tokenExpiration - 60 * 1000
+  ) {
+    return cachedToken;
+  }
+
   try {
     const response = await fetch(`${process.env.NEST_API_URL}/api/auth/login`, {
       method: "POST",
@@ -30,9 +43,15 @@ export async function GetNestToken(): Promise<string> {
 
     // Backend response contains the JWT access token
     const data = await response.json();
+    cachedToken = data.accessToken as string;
+
+    const payload = JSON.parse(
+      Buffer.from(cachedToken.split(".")[1], "base64").toString()
+    );
+    tokenExpiration = payload.exp * 1000;
 
     // Return the access token so it can be used for API requests
-    return data.accessToken as string;
+    return cachedToken;
   } catch (error) {
     console.error("Error authenticating with the Nest API:", error);
     throw error;
