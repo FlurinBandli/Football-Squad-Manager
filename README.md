@@ -1,46 +1,83 @@
-# FC Zürich-Leutschenbach Frontend
+# ⚽ Football Squad Manager
 
-This project is a web application for managing and displaying football squads. Squads can be created and managed in a protected admin area and shared
-with external users via a public link.
+A modern web application for managing and sharing football squads.
 
-The frontend is built with Next.js and communicates with an existing NestJS backend via a REST API.
+This project is an improved and extended version of my IPA project, focusing on better structure, improved UI/UX, and additional features.
 
-## Tech Stack
+---
 
-- Next.js
-- TypeScript
-- NextAuth
-- shadcn/ui
-- Tailwind CSS
+### 🔐 Admin Area
 
-## Requirements
+- Create, edit and delete squads
+- Manage players and trainers
+- Assign players to positions (Squad Builder)
+- Form validation using React Hook Form & Zod
+
+### ⚽ Squad Builder
+
+- Dynamic lineup creation
+- Assign players to positions (Striker, Midfielder, Defender, Goalkeeper)
+- Add backup players and trainers
+- Prevent duplicate player selection
+
+### 🌍 Public Squad View
+
+- Share squads via unique link
+- Display players grouped by position
+- Visual football pitch layout
+- Responsive design for mobile and desktop
+
+### ⚙️ General
+
+- Authentication with NextAuth
+- API integration with NestJS backend
+- Clean and modern UI using Tailwind & shadcn/ui
+- Responsive layout
+
+---
+
+## 🛠️ Tech Stack
+
+- **Framework:** Next.js (App Router)
+- **Language:** TypeScript
+- **Auth:** NextAuth
+- **UI:** Tailwind CSS + shadcn/ui
+- **Forms:** React Hook Form + Zod
+- **Backend:** NestJS (REST API)
+
+---
+
+## 📸 Screenshots
+
+### Admin – Teams
+
+<img src="./public/screenshots/teams.png" alt="teams" width="800" />
+
+### Squad Builder
+
+<img src="./public/screenshots/builder.png" alt="builder" width="800" />
+
+### Public Squad View
+
+<img src="./public/screenshots/squad.png" alt="squad" width="800" />
+
+### Admin – Players
+
+<img src="./public/screenshots/players.png" alt="players" width="800" />
+
+---
+
+## ⚙️ Setup
+
+### Requirements
 
 - Node.js v20
 - npm
-- Running Nest.js backend (API)
+- Running NestJS backend
 
-## Setup
-
-1. Clone the repository and install dependencies:
+### Installation
 
 ```bash
 npm install
-```
-
-2. Create a .env file based on the provided example:
-
-```bash
 cp .env.example .env
 ```
-
-3. Adjust the values if necessary (API URL, credentials).
-
-## Running the project
-
-Start the development server:
-
-```bash
-npm run dev
-```
-
-Open the application in your browser at [http://localhost:3000](http://localhost:3000)
