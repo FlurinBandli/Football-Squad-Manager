@@ -22,7 +22,7 @@ import { Squad } from "@/types";
 import DeleteSquadButton from "@/app/admin/squads/components/delete-squad-button";
 import { encodeSquadId } from "@/lib/hashids";
 import { CirclePlus } from "lucide-react";
-import IconTooltipButton from "@/app/admin/components/icon-tooltip-button";
+import IconTooltipLink from "@/app/admin/components/icon-tooltip-link";
 import AdminSearchInput from "@/app/admin/components/admin-search-input";
 import AdminPagination from "@/app/admin/components/admin-pagination";
 
@@ -101,34 +101,33 @@ export default async function SquadsPage({ searchParams }: SquadsPageProps) {
                 <TableCell>{squad.name}</TableCell>
                 <TableCell>{squad.description}</TableCell>
                 <TableCell>
-                  {new Date(squad.date).toLocaleDateString("de-CH")}
+                  {new Intl.DateTimeFormat("de-CH", {
+                    timeZone: "Europe/Zurich",
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                  }).format(new Date(squad.date))}
                 </TableCell>
                 <TableCell className="text-center">
-                  <IconTooltipButton
+                  <IconTooltipLink
+                    href={`/squad/${encodeSquadId(squad.id)}`}
+                    target="_blank"
                     variant="outline"
                     tooltip="Team ansehen"
                     tooltipSide="left"
-                    asChild
                   >
-                    <Link
-                      href={`/squad/${encodeSquadId(squad.id)}`}
-                      target="_blank"
-                    >
-                      <Eye />
-                    </Link>
-                  </IconTooltipButton>
+                    <Eye />
+                  </IconTooltipLink>
                 </TableCell>
                 <TableCell className="text-center">
-                  <IconTooltipButton
+                  <IconTooltipLink
+                    href={`/admin/squads/${squad.id}/edit`}
                     variant="default"
                     tooltip="Team bearbeiten"
                     tooltipSide="left"
-                    asChild
                   >
-                    <Link href={`/admin/squads/${squad.id}/edit`}>
-                      <Pencil />
-                    </Link>
-                  </IconTooltipButton>
+                    <Pencil />
+                  </IconTooltipLink>
                 </TableCell>
                 <TableCell className="text-center">
                   <DeleteSquadButton id={squad.id} />

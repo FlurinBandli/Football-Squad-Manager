@@ -72,7 +72,7 @@ export default function LoginForm() {
 
   return (
     <div className="w-full min-h-screen bg-slate-100 flex items-center justify-center">
-      <Card className="w-full max-w-md bg-white shadow-lg">
+      <Card className="w-full max-w-md bg-white shadow-lg m-2">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Admin Login</CardTitle>
           <Image
@@ -80,6 +80,7 @@ export default function LoginForm() {
             alt="Logo FC Zürich-Leutschenbach"
             width={60}
             height={60}
+            loading="eager"
           />
         </CardHeader>
         <CardContent>

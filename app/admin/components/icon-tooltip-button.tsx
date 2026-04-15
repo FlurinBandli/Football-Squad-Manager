@@ -21,7 +21,7 @@ export default function IconTooltipButton({
     <TooltipProvider delayDuration={500} skipDelayDuration={100}>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button size="icon" type="button" {...props}>
+          <Button size="icon" {...props}>
             {children}
           </Button>
         </TooltipTrigger>
