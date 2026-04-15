@@ -19,13 +19,31 @@ import { Player } from "@/types";
 import DeletePlayerButton from "@/app/admin/players/components/delete-player-button";
 import PlayerForm from "@/app/admin/players/components/player-form";
 import { useState } from "react";
+import { Gender } from "@/types";
+import IconTooltipButton from "@/app/admin/components/icon-tooltip-button";
+import AdminSearchInput from "@/app/admin/components/admin-search-input";
+import AdminPagination from "@/app/admin/components/admin-pagination";
 
-export default function PlayersClient({ players }: { players: Player[] }) {
+export default function PlayersClient({
+  players,
+  totalPages,
+  currentPage,
+}: {
+  players: Player[];
+  totalPages: number;
+  currentPage: number;
+}) {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"create" | "edit">("create");
   const [selectedPlayer, setSelectedPlayer] = useState<Player | undefined>(
     undefined
   );
+
+  const genderMap: Record<Gender, string> = {
+    Male: "Männlich",
+    Female: "Weiblich",
+    Other: "Divers",
+  };
 
   function handleCreate() {
     setMode("create");
@@ -41,13 +59,13 @@ export default function PlayersClient({ players }: { players: Player[] }) {
 
   return (
     <div>
-      <Button
-        className="flex justify-center w-full mb-4 cursor-pointer"
-        onClick={handleCreate}
-      >
-        <CirclePlus className="w-4 h-4 mr-2" />
-        Neuen Spieler erstellen
-      </Button>
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <AdminSearchInput placeholder="Nach Spielernamen suchen..." />
+        <Button className="w-fit cursor-pointer" onClick={handleCreate}>
+          <CirclePlus className="w-4 h-4 mr-2" />
+          Neuen Spieler erstellen
+        </Button>
+      </div>
 
       {/* Table displaying the list of players with options to edit or delete each player */}
       <Table className="w-full">
@@ -76,17 +94,18 @@ export default function PlayersClient({ players }: { players: Player[] }) {
               <TableRow key={player.id}>
                 <TableCell>{player.firstName}</TableCell>
                 <TableCell>{player.lastName}</TableCell>
-                <TableCell>{player.gender}</TableCell>
+                <TableCell>{genderMap[player.gender]}</TableCell>
 
                 <TableCell>
-                  <Button
-                    title="Spieler bearbeiten"
+                  <IconTooltipButton
+                    tooltip="Spieler bearbeiten"
+                    tooltipSide="left"
                     type="button"
                     className="cursor-pointer"
                     onClick={() => handleEdit(player)}
                   >
                     <Pencil />
-                  </Button>
+                  </IconTooltipButton>
                 </TableCell>
                 <TableCell>
                   <DeletePlayerButton id={player.id} />
@@ -103,6 +122,7 @@ export default function PlayersClient({ players }: { players: Player[] }) {
         player={selectedPlayer}
         mode={mode}
       />
+      <AdminPagination totalPages={totalPages} currentPage={currentPage} />
     </div>
   );
 }

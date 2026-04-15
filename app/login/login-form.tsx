@@ -25,8 +25,8 @@ import { LogIn } from "lucide-react";
  */
 
 const formSchema = z.object({
-  username: z.string().min(1, "Benutzername ist erforderlich"),
-  password: z.string().min(1, "Passwort ist erforderlich"),
+  username: z.string().trim().min(1, "Benutzername ist erforderlich"),
+  password: z.string().trim().min(1, "Passwort ist erforderlich"),
 });
 
 export default function LoginForm() {
@@ -72,7 +72,7 @@ export default function LoginForm() {
 
   return (
     <div className="w-full min-h-screen bg-slate-100 flex items-center justify-center">
-      <Card className="w-full max-w-md bg-white shadow-lg">
+      <Card className="w-full max-w-md bg-white shadow-lg m-2">
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Admin Login</CardTitle>
           <Image
@@ -80,6 +80,7 @@ export default function LoginForm() {
             alt="Logo FC Zürich-Leutschenbach"
             width={60}
             height={60}
+            loading="eager"
           />
         </CardHeader>
         <CardContent>

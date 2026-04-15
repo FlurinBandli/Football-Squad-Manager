@@ -11,7 +11,11 @@ import { redirect } from "next/navigation";
 import { Player } from "@/types";
 import PlayersClient from "@/app/admin/players/components/players-client";
 
-export default async function Players() {
+type PlayersPageProps = {
+  searchParams: Promise<{ query?: string; page?: string }>;
+};
+
+export default async function Players({ searchParams }: PlayersPageProps) {
   // Check if the user is authenticated, if not redirect to login page
   const session = await auth();
   if (!session) redirect("/login");
@@ -24,9 +28,28 @@ export default async function Players() {
     return <div className="p-4 text-destructive">Backend nicht erreichbar</div>;
   }
 
+  const params = await searchParams;
+  const query = params.query?.toLowerCase() ?? "";
+  const currentPage = Number(params.page ?? "1");
+  const itemsPerPage = 10;
+
+  const filteredPlayers = players.filter((player) =>
+    `${player.firstName} ${player.lastName}`.toLowerCase().includes(query)
+  );
+
+  const totalPages = Math.ceil(filteredPlayers.length / itemsPerPage);
+  const paginatedPlayers = filteredPlayers.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <div className="p-4">
-      <PlayersClient players={players} />
+      <PlayersClient
+        players={paginatedPlayers}
+        totalPages={totalPages}
+        currentPage={currentPage}
+      />
     </div>
   );
 }

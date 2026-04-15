@@ -8,8 +8,8 @@
  */
 
 import { Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { deleteTrainerAction } from "@/app/admin/trainers/actions";
+import IconTooltipButton from "@/app/admin/components/icon-tooltip-button";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -36,13 +36,14 @@ export default function DeleteTrainerButton({ id }: { id: number }) {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button
-          title="Trainer löschen"
+        <IconTooltipButton
+          tooltip="Trainer löschen"
+          tooltipSide="left"
           variant="destructive"
           className="cursor-pointer"
         >
           <Trash2 />
-        </Button>
+        </IconTooltipButton>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

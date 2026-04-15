@@ -17,16 +17,32 @@ import { Button } from "@/components/ui/button";
 import { CirclePlus, Pencil } from "lucide-react";
 import { Trainer } from "@/types";
 import DeleteTrainerButton from "@/app/admin/trainers/components/delete-trainer-button";
-
+import IconTooltipButton from "@/app/admin/components/icon-tooltip-button";
 import { useState } from "react";
 import TrainerForm from "@/app/admin/trainers/components/trainer-form";
+import { Gender } from "@/types";
+import AdminSearchInput from "@/app/admin/components/admin-search-input";
+import AdminPagination from "@/app/admin/components/admin-pagination";
 
-export default function TrainersClient({ trainers }: { trainers: Trainer[] }) {
+export default function TrainersClient({
+  trainers,
+  totalPages,
+  currentPage,
+}: {
+  trainers: Trainer[];
+  totalPages: number;
+  currentPage: number;
+}) {
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState<"create" | "edit">("create");
   const [selectedTrainer, setSelectedTrainer] = useState<Trainer | undefined>(
     undefined
   );
+  const genderMap: Record<Gender, string> = {
+    Male: "Männlich",
+    Female: "Weiblich",
+    Other: "Divers",
+  };
 
   // Handler function to open the TrainerForm in create mode
   function handleCreate() {
@@ -44,13 +60,13 @@ export default function TrainersClient({ trainers }: { trainers: Trainer[] }) {
 
   return (
     <div>
-      <Button
-        className="flex justify-center w-full mb-4 cursor-pointer"
-        onClick={handleCreate}
-      >
-        <CirclePlus className="w-4 h-4 mr-2" />
-        Neuen Trainer erstellen
-      </Button>
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <AdminSearchInput placeholder="Nach Trainernamen suchen..." />
+        <Button className="w-fit cursor-pointer" onClick={handleCreate}>
+          <CirclePlus className="w-4 h-4 mr-2" />
+          Neuen Trainer erstellen
+        </Button>
+      </div>
 
       {/* Table displaying the list of trainers with options to edit or delete each trainer */}
       <Table className="w-full">
@@ -79,17 +95,18 @@ export default function TrainersClient({ trainers }: { trainers: Trainer[] }) {
               <TableRow key={trainer.id}>
                 <TableCell>{trainer.firstName}</TableCell>
                 <TableCell>{trainer.lastName}</TableCell>
-                <TableCell>{trainer.gender}</TableCell>
+                <TableCell>{genderMap[trainer.gender]}</TableCell>
 
                 <TableCell>
-                  <Button
-                    title="Trainer bearbeiten"
+                  <IconTooltipButton
+                    tooltip="Trainer bearbeiten"
+                    tooltipSide="left"
                     type="button"
                     className="cursor-pointer"
                     onClick={() => handleEdit(trainer)}
                   >
                     <Pencil />
-                  </Button>
+                  </IconTooltipButton>
                 </TableCell>
                 <TableCell>
                   <DeleteTrainerButton id={trainer.id} />
@@ -106,6 +123,8 @@ export default function TrainersClient({ trainers }: { trainers: Trainer[] }) {
         trainer={selectedTrainer}
         mode={mode}
       />
+
+      <AdminPagination totalPages={totalPages} currentPage={currentPage} />
     </div>
   );
 }
