@@ -153,7 +153,7 @@ export default function SquadForm({
         </CardHeader>
         <CardContent>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="flex flex-row gap-4">
+            <div className="flex flex-col lg:flex-row gap-4">
               <Field className="flex-1">
                 <FieldLabel>Teamname</FieldLabel>
                 <Input autoFocus {...form.register("name")} />

@@ -31,7 +31,7 @@ export default async function Players({ searchParams }: PlayersPageProps) {
   const params = await searchParams;
   const query = params.query?.toLowerCase() ?? "";
   const currentPage = Number(params.page ?? "1");
-  const itemsPerPage = 10;
+  const itemsPerPage = 8;
 
   const filteredPlayers = players.filter((player) =>
     `${player.firstName} ${player.lastName}`.toLowerCase().includes(query)

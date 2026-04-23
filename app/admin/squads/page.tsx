@@ -46,7 +46,7 @@ export default async function SquadsPage({ searchParams }: SquadsPageProps) {
   const params = await searchParams;
   const query = params.query?.toLowerCase() ?? "";
   const currentPage = Number(params.page ?? "1");
-  const itemsPerPage = 10;
+  const itemsPerPage = 8;
 
   const filteredSquads = squads.filter((squad) =>
     squad.name.toLowerCase().includes(query)
@@ -61,8 +61,8 @@ export default async function SquadsPage({ searchParams }: SquadsPageProps) {
 
   return (
     <div className="p-4">
-      <div className="mb-4 flex items-center justify-between gap-4">
-        <AdminSearchInput placeholder="Nach Teamname suchen..." />
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <AdminSearchInput placeholder="Suchen..." />
         <Button asChild className="w-fit cursor-pointer">
           <Link href="/admin/squads/new">
             <CirclePlus className="w-4 h-4 mr-2" /> Neues Team erstellen
@@ -74,13 +74,11 @@ export default async function SquadsPage({ searchParams }: SquadsPageProps) {
       <Table className="w-full">
         <TableHeader>
           <TableRow>
-            <TableHead>Id</TableHead>
+            <TableHead className="hidden md:table-cell">Id</TableHead>
             <TableHead>Name</TableHead>
-            <TableHead>Beschreibung</TableHead>
+            <TableHead className="hidden lg:table-cell">Beschreibung</TableHead>
             <TableHead>Datum</TableHead>
-            <TableHead className="text-center">Ansehen</TableHead>
-            <TableHead className="text-center">Bearbeiten</TableHead>
-            <TableHead className="text-center">Löschen</TableHead>
+            <TableHead className="text-center">Aktionen</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -88,7 +86,7 @@ export default async function SquadsPage({ searchParams }: SquadsPageProps) {
           {filteredSquads.length === 0 ? (
             <TableRow>
               <TableCell
-                colSpan={7}
+                colSpan={5}
                 className="text-center py-6 text-muted-foreground"
               >
                 Keine Teams gefunden.
@@ -97,9 +95,16 @@ export default async function SquadsPage({ searchParams }: SquadsPageProps) {
           ) : (
             paginatedSquads.map((squad) => (
               <TableRow key={squad.id}>
-                <TableCell>{squad.id}</TableCell>
+                <TableCell className="hidden md:table-cell">
+                  {squad.id}
+                </TableCell>
+
                 <TableCell>{squad.name}</TableCell>
-                <TableCell>{squad.description}</TableCell>
+
+                <TableCell className="hidden lg:table-cell">
+                  {squad.description}
+                </TableCell>
+
                 <TableCell>
                   {new Intl.DateTimeFormat("de-CH", {
                     timeZone: "Europe/Zurich",
@@ -108,29 +113,30 @@ export default async function SquadsPage({ searchParams }: SquadsPageProps) {
                     year: "numeric",
                   }).format(new Date(squad.date))}
                 </TableCell>
+
                 <TableCell className="text-center">
-                  <IconTooltipLink
-                    href={`/squad/${encodeSquadId(squad.id)}`}
-                    target="_blank"
-                    variant="outline"
-                    tooltip="Team ansehen"
-                    tooltipSide="left"
-                  >
-                    <Eye />
-                  </IconTooltipLink>
-                </TableCell>
-                <TableCell className="text-center">
-                  <IconTooltipLink
-                    href={`/admin/squads/${squad.id}/edit`}
-                    variant="default"
-                    tooltip="Team bearbeiten"
-                    tooltipSide="left"
-                  >
-                    <Pencil />
-                  </IconTooltipLink>
-                </TableCell>
-                <TableCell className="text-center">
-                  <DeleteSquadButton id={squad.id} />
+                  <div className="flex items-center justify-center gap-1.5 md:gap-3">
+                    <IconTooltipLink
+                      href={`/squad/${encodeSquadId(squad.id)}`}
+                      target="_blank"
+                      variant="outline"
+                      tooltip="Team ansehen"
+                      tooltipSide="left"
+                    >
+                      <Eye />
+                    </IconTooltipLink>
+
+                    <IconTooltipLink
+                      href={`/admin/squads/${squad.id}/edit`}
+                      variant="default"
+                      tooltip="Team bearbeiten"
+                      tooltipSide="left"
+                    >
+                      <Pencil />
+                    </IconTooltipLink>
+
+                    <DeleteSquadButton id={squad.id} />
+                  </div>
                 </TableCell>
               </TableRow>
             ))

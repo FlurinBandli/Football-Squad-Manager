@@ -130,9 +130,9 @@ export default function SquadBuilder({
         <CardTitle>Aufstellung</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-row gap-4">
+        <div className="flex flex-col lg:flex-row gap-4">
           {/* left side: the lineup */}
-          <div className="flex flex-col gap-4 border-2 w-2/3">
+          <div className="flex flex-col gap-4 border-2 w-full lg:w-2/3">
             {/* striker section */}
             <PlayerSection
               title="Sturm"
@@ -179,7 +179,7 @@ export default function SquadBuilder({
           </div>
 
           {/* right side the trainers and backups */}
-          <div className="flex flex-col gap-4 border-2 w-1/3">
+          <div className="flex flex-col gap-4 border-2 w-full lg:w-1/3">
             {/* trainer section */}
             <TrainerSection
               title="Trainer"
