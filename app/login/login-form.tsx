@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Image from "next/image";
-import { LogIn } from "lucide-react";
+import { EyeOff, Eye, LogIn } from "lucide-react";
 import Logo from "@/public/fc-zh-leutschenbach-logo.avif";
 
 /**
@@ -33,6 +33,7 @@ const formSchema = z.object({
 export default function LoginForm() {
   const router = useRouter();
   const [loginError, setLoginError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   /**
    * Initializes React Hook Form with Zod validation.
@@ -99,7 +100,29 @@ export default function LoginForm() {
             </Field>
             <Field className="mb-4">
               <FieldLabel>Passwort</FieldLabel>
-              <Input type="password" {...form.register("password")} />
+              <div className="relative">
+                <Input
+                  type={showPassword ? "text" : "password"}
+                  className="pr-10"
+                  {...form.register("password")}
+                />
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="absolute right-0 top-0 h-full px-3 flex items-center"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  aria-label={
+                    showPassword ? "Passwort verstecken" : "Passwort anzeigen"
+                  }
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-4 w-4" />
+                  ) : (
+                    <Eye className="h-4 w-4" />
+                  )}
+                </Button>
+              </div>
               {form.formState.errors.password && (
                 <p className="text-sm text-red-600">
                   {form.formState.errors.password.message}
