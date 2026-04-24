@@ -61,7 +61,7 @@ export default function TrainersClient({
   return (
     <div>
       <div className="mb-4 flex items-center justify-between gap-4">
-        <AdminSearchInput placeholder="Nach Trainernamen suchen..." />
+        <AdminSearchInput placeholder="Suchen..." />
         <Button className="w-fit cursor-pointer" onClick={handleCreate}>
           <CirclePlus className="w-4 h-4 mr-2" />
           Neuen Trainer erstellen
@@ -75,8 +75,7 @@ export default function TrainersClient({
             <TableHead>Vorname</TableHead>
             <TableHead>Nachname</TableHead>
             <TableHead>Geschlecht</TableHead>
-            <TableHead>Bearbeiten</TableHead>
-            <TableHead>Löschen</TableHead>
+            <TableHead className="text-center">Aktionen</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -84,7 +83,7 @@ export default function TrainersClient({
           {trainers.length === 0 ? (
             <TableRow>
               <TableCell
-                colSpan={5}
+                colSpan={4}
                 className="text-center py-6 text-muted-foreground"
               >
                 Keine Trainer gefunden.
@@ -98,18 +97,19 @@ export default function TrainersClient({
                 <TableCell>{genderMap[trainer.gender]}</TableCell>
 
                 <TableCell>
-                  <IconTooltipButton
-                    tooltip="Trainer bearbeiten"
-                    tooltipSide="left"
-                    type="button"
-                    className="cursor-pointer"
-                    onClick={() => handleEdit(trainer)}
-                  >
-                    <Pencil />
-                  </IconTooltipButton>
-                </TableCell>
-                <TableCell>
-                  <DeleteTrainerButton id={trainer.id} />
+                  <div className="flex items-center justify-center gap-1.5 md:gap-3">
+                    <IconTooltipButton
+                      tooltip="Trainer bearbeiten"
+                      tooltipSide="left"
+                      type="button"
+                      className="cursor-pointer"
+                      onClick={() => handleEdit(trainer)}
+                    >
+                      <Pencil />
+                    </IconTooltipButton>
+
+                    <DeleteTrainerButton id={trainer.id} />
+                  </div>
                 </TableCell>
               </TableRow>
             ))

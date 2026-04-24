@@ -31,7 +31,7 @@ export default async function Trainers({ searchParams }: TrainersPageProps) {
   const params = await searchParams;
   const query = params.query?.toLowerCase() ?? "";
   const currentPage = Number(params.page ?? "1");
-  const itemsPerPage = 10;
+  const itemsPerPage = 8;
 
   const filteredTrainers = trainers.filter((trainer) =>
     `${trainer.firstName} ${trainer.lastName}`.toLowerCase().includes(query)

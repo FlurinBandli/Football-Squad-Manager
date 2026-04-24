@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import Image from "next/image";
 import { LogIn } from "lucide-react";
+import Logo from "@/public/fc-zh-leutschenbach-logo.avif";
 
 /**
  * Zod schema for validating the login form inputs.
@@ -76,11 +77,10 @@ export default function LoginForm() {
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Admin Login</CardTitle>
           <Image
-            src="/fc-zh-leutschenbach-logo.png"
+            src={Logo}
             alt="Logo FC Zürich-Leutschenbach"
             width={60}
             height={60}
-            loading="eager"
           />
         </CardHeader>
         <CardContent>

@@ -7,6 +7,7 @@
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import Image from "next/image";
+import Logo from "@/public/fc-zh-leutschenbach-logo.avif";
 
 export default async function HomePage() {
   const session = await auth();
@@ -19,10 +20,10 @@ export default async function HomePage() {
         Willkommen bei der Squad-App vom FC Zürich-Leutschenbach
       </p>
       <Image
-        src="/fc-zh-leutschenbach-logo.png"
+        src={Logo}
         alt="Logo FC Zürich-Leutschenbach"
         width={200}
-        height={100}
+        height={200}
       />
     </main>
   );

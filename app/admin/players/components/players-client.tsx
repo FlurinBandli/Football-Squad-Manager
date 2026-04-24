@@ -60,7 +60,7 @@ export default function PlayersClient({
   return (
     <div>
       <div className="mb-4 flex items-center justify-between gap-4">
-        <AdminSearchInput placeholder="Nach Spielernamen suchen..." />
+        <AdminSearchInput placeholder="Suchen..." />
         <Button className="w-fit cursor-pointer" onClick={handleCreate}>
           <CirclePlus className="w-4 h-4 mr-2" />
           Neuen Spieler erstellen
@@ -74,8 +74,7 @@ export default function PlayersClient({
             <TableHead>Vorname</TableHead>
             <TableHead>Nachname</TableHead>
             <TableHead>Geschlecht</TableHead>
-            <TableHead>Bearbeiten</TableHead>
-            <TableHead>Löschen</TableHead>
+            <TableHead className="text-center">Aktionen</TableHead>
           </TableRow>
         </TableHeader>
 
@@ -83,7 +82,7 @@ export default function PlayersClient({
           {players.length === 0 ? (
             <TableRow>
               <TableCell
-                colSpan={5}
+                colSpan={4}
                 className="text-center py-6 text-muted-foreground"
               >
                 Keine Spieler gefunden.
@@ -96,19 +95,20 @@ export default function PlayersClient({
                 <TableCell>{player.lastName}</TableCell>
                 <TableCell>{genderMap[player.gender]}</TableCell>
 
-                <TableCell>
-                  <IconTooltipButton
-                    tooltip="Spieler bearbeiten"
-                    tooltipSide="left"
-                    type="button"
-                    className="cursor-pointer"
-                    onClick={() => handleEdit(player)}
-                  >
-                    <Pencil />
-                  </IconTooltipButton>
-                </TableCell>
-                <TableCell>
-                  <DeletePlayerButton id={player.id} />
+                <TableCell className="text-center">
+                  <div className="flex items-center justify-center gap-1.5 md:gap-3">
+                    <IconTooltipButton
+                      tooltip="Spieler bearbeiten"
+                      tooltipSide="left"
+                      type="button"
+                      className="cursor-pointer"
+                      onClick={() => handleEdit(player)}
+                    >
+                      <Pencil />
+                    </IconTooltipButton>
+
+                    <DeletePlayerButton id={player.id} />
+                  </div>
                 </TableCell>
               </TableRow>
             ))
