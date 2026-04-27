@@ -178,7 +178,11 @@ export default function PlayerForm({
             </Field>
 
             <SheetFooter>
-              <Button type="submit" className="cursor-pointer">
+              <Button
+                type="submit"
+                className="cursor-pointer"
+                aria-label="Spieler speichern"
+              >
                 Speichern
               </Button>
               <SheetClose asChild>
@@ -186,6 +190,7 @@ export default function PlayerForm({
                   type="button"
                   variant="outline"
                   className="cursor-pointer"
+                  aria-label="Bearbeitung abbrechen"
                 >
                   Abbrechen
                 </Button>

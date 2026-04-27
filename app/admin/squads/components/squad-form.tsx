@@ -139,7 +139,7 @@ export default function SquadForm({
       );
       return;
     }
-    router.push("/admin/squads");
+    router.push(`/admin/squads?query=${encodeURIComponent(data.name)}`);
     toast.success(
       "Team erfolgreich " + (mode === "edit" ? "aktualisiert" : "erstellt")
     );
@@ -186,6 +186,7 @@ export default function SquadForm({
                         <Button
                           variant="outline"
                           className="w-full justify-between cursor-pointer"
+                          aria-label="Datum auswählen"
                         >
                           {field.value
                             ? format(field.value, "dd.MM.yyyy")
@@ -212,13 +213,18 @@ export default function SquadForm({
             </div>
 
             <div className="flex gap-2">
-              <Button type="submit" className="cursor-pointer">
+              <Button
+                type="submit"
+                className="cursor-pointer"
+                aria-label="Team speichern"
+              >
                 {mode === "edit" ? "Team aktualisieren" : "Team erstellen"}
               </Button>
               <Button
                 type="button"
                 variant="outline"
                 className="cursor-pointer"
+                aria-label="Bearbeitung abbrechen"
                 onClick={() => router.push("/admin/squads")}
               >
                 Abbrechen
