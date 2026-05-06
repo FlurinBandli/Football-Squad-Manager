@@ -2,21 +2,26 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from "@playwright/test";
+import { gotoAdmin } from "../helpers/admin";
 
 test("Create, edit and delete squad", async ({ page }) => {
   const name = `PW_TEST_Squad_${Date.now()}`;
   const editedName = `${name}_Edited`;
+  const waitForSquadAction = () =>
+    page.waitForResponse(
+      (response) =>
+        response.request().method() === "POST" &&
+        response.url().includes("/admin/squads")
+    );
 
-  // 1. Create squad
-  await page.goto("/admin/squads");
+  await gotoAdmin(page, "/admin/squads");
   await page.getByRole("link", { name: "Neues Team erstellen" }).click();
 
-  await page.getByLabel("Teamname", { exact: true }).fill(name);
-  await page
-    .getByLabel("Beschreibung", { exact: true })
-    .fill("Created by Playwright");
+  const createForm = page.locator("form");
+  await createForm.locator("input").nth(0).fill(name);
+  await createForm.locator("input").nth(1).fill("Created by Playwright");
 
-  await page.getByRole("button", { name: "Datum auswählen" }).click();
+  await page.getByRole("button", { name: /Datum ausw/ }).click();
 
   const calendar = page.getByRole("grid");
   await expect(calendar).toBeVisible();
@@ -27,25 +32,36 @@ test("Create, edit and delete squad", async ({ page }) => {
     .first()
     .click();
 
-  await page.getByRole("button", { name: "Team speichern" }).click();
+  await Promise.all([
+    waitForSquadAction(),
+    page.getByRole("button", { name: "Team speichern" }).click(),
+  ]);
 
-  await expect(page).toHaveURL(/\/admin\/squads(\?.*)?$/);
-  await expect(page.getByText(name)).toBeVisible();
+  await expect(page).toHaveURL(/\/admin\/squads\?query=/);
+  await expect(page.getByRole("row", { name: new RegExp(name) })).toBeVisible();
 
-  // 2. Edit squad
   const row = page.getByRole("row", { name: new RegExp(name) });
   await row.getByRole("link", { name: "Team bearbeiten" }).click();
 
-  await page.getByLabel("Teamname", { exact: true }).fill(editedName);
-  await page.getByRole("button", { name: "Team speichern" }).click();
+  const editForm = page.locator("form");
+  await editForm.locator("input").nth(0).fill(editedName);
+  await Promise.all([
+    waitForSquadAction(),
+    page.getByRole("button", { name: "Team speichern" }).click(),
+  ]);
 
-  await expect(page.getByText(editedName)).toBeVisible();
+  await expect(page).toHaveURL(/\/admin\/squads\?query=/);
+  await expect(
+    page.getByRole("row", { name: new RegExp(editedName) })
+  ).toBeVisible();
 
-  // 3. Delete squad
   const editedRow = page.getByRole("row", { name: new RegExp(editedName) });
-  await editedRow.getByRole("button", { name: "Team löschen" }).click();
+  await editedRow.getByRole("button", { name: /Team .*schen/ }).click();
+  await Promise.all([
+    waitForSquadAction(),
+    page.getByRole("alertdialog").getByRole("button", { name: /schen/ }).click(),
+  ]);
 
-  await page.getByRole("button", { name: "Löschen" }).click();
-
-  await expect(page.getByText(editedName)).not.toBeVisible();
+  await gotoAdmin(page, `/admin/squads?query=${encodeURIComponent(editedName)}`);
+  await expect(page.getByText("Keine Teams gefunden.")).toBeVisible();
 });

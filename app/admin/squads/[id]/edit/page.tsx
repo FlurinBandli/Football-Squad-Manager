@@ -4,23 +4,14 @@
  */
 
 import { NestFetch } from "@/lib/nest-api";
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
 import { Player, Trainer, Squad } from "@/types";
 import SquadForm from "@/app/admin/squads/components/squad-form";
 
 export default async function EditSquad({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  /**
-   * Ensure the user is authenticated before accessing the admin page.
-   * Unauthenticated users are redirected to the login page.
-   */
-  const session = await auth();
-  if (!session) redirect("/login");
-
   const { id } = await params;
 
   /**

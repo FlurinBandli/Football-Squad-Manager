@@ -4,19 +4,10 @@
  */
 
 import { NestFetch } from "@/lib/nest-api";
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
 import { Player, Trainer } from "@/types";
 import SquadForm from "@/app/admin/squads/components/squad-form";
 
 export default async function NewSquad() {
-  /**
-   * Ensure the user is authenticated before accessing the admin page.
-   * Unauthenticated users are redirected to the login page.
-   */
-  const session = await auth();
-  if (!session) redirect("/login");
-
   /**
    * Fetch available players from the backend.
    * These will later be selectable inside the squad builder.

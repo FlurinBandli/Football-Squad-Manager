@@ -5,9 +5,7 @@
  * If the backend is unreachable, it shows an error message.
  */
 
-import { auth } from "@/auth";
 import { NestFetch } from "@/lib/nest-api";
-import { redirect } from "next/navigation";
 import { Player } from "@/types";
 import PlayersClient from "@/app/admin/players/components/players-client";
 
@@ -16,10 +14,6 @@ type PlayersPageProps = {
 };
 
 export default async function Players({ searchParams }: PlayersPageProps) {
-  // Check if the user is authenticated, if not redirect to login page
-  const session = await auth();
-  if (!session) redirect("/login");
-
   // Fetch all players from the NestJS backend API
   let players: Player[] = [];
   try {

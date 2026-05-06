@@ -6,11 +6,10 @@
  * The deleteTrainerAction function also triggers a revalidation of the trainers page to reflect changes immediately.
  */
 
-import { auth } from "@/auth";
+import { requireAuth } from "@/lib/auth-helpers";
 import { NestFetch } from "@/lib/nest-api";
 import { TrainerPayload } from "@/types";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 /**
  * Action function to delete a trainer.
@@ -23,8 +22,7 @@ export async function deleteTrainerAction(id: number) {
    * Check whether the user is authenticated.
    * Unauthorized users are redirected to the login page.
    */
-  const session = await auth();
-  if (!session) redirect("/login");
+  await requireAuth();
 
   try {
     await NestFetch(`/api/trainer/${id}`, {
@@ -54,8 +52,7 @@ export async function createTrainerAction(payload: TrainerPayload) {
      * Check whether the user is authenticated.
      * Unauthorized users are redirected to the login page.
      */
-    const session = await auth();
-    if (!session) redirect("/login");
+    await requireAuth();
 
     /**
      * Forward the trainer creation request to the NestJS backend.
@@ -91,8 +88,7 @@ export async function updateTrainerAction(id: number, payload: TrainerPayload) {
      * Check whether the user is authenticated.
      * Unauthorized users are redirected to the login page.
      */
-    const session = await auth();
-    if (!session) redirect("/login");
+    await requireAuth();
 
     /**
      * Forward the trainer update request to the NestJS backend.

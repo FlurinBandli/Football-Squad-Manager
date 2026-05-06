@@ -6,11 +6,10 @@
  * The deletePlayerAction function also triggers a revalidation of the players page to reflect changes immediately.
  */
 
-import { auth } from "@/auth";
 import { NestFetch } from "@/lib/nest-api";
 import { PlayerPayload } from "@/types";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
+import { requireAuth } from "@/lib/auth-helpers";
 
 /**
  * Action function to delete a player.
@@ -23,8 +22,7 @@ export async function deletePlayerAction(id: number) {
    * Check whether the user is authenticated.
    * Unauthorized users are redirected to the login page.
    */
-  const session = await auth();
-  if (!session) redirect("/login");
+  await requireAuth();
 
   try {
     await NestFetch(`/api/player/${id}`, {
@@ -54,8 +52,7 @@ export async function createPlayerAction(payload: PlayerPayload) {
      * Check whether the user is authenticated.
      * Unauthorized users are redirected to the login page.
      */
-    const session = await auth();
-    if (!session) redirect("/login");
+    await requireAuth();
 
     /**
      * Forward the player creation request to the NestJS backend.
@@ -91,8 +88,7 @@ export async function updatePlayerAction(id: number, payload: PlayerPayload) {
      * Check whether the user is authenticated.
      * Unauthorized users are redirected to the login page.
      */
-    const session = await auth();
-    if (!session) redirect("/login");
+    await requireAuth();
 
     /**
      * Forward the player update request to the NestJS backend.

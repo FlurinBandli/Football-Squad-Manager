@@ -6,11 +6,10 @@
  * Each function checks for user authentication, performs the necessary API calls, and handles success or error responses accordingly.
  * The deleteSquadAction function also triggers a revalidation of the squads page to reflect changes immediately.
  */
-import { auth } from "@/auth";
+import { requireAuth } from "@/lib/auth-helpers";
 import { NestFetch } from "@/lib/nest-api";
 import { SquadPayload } from "@/types";
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 /**
  * Action function to delete a squad.
  * @param id The ID of the squad to delete.
@@ -22,8 +21,7 @@ export async function deleteSquadAction(id: number) {
    * Check whether the user is authenticated.
    * Unauthorized users are redirected to the login page.
    */
-  const session = await auth();
-  if (!session) redirect("/login");
+  await requireAuth();
 
   try {
     await NestFetch(`/api/squad/${id}`, {
@@ -53,9 +51,7 @@ export async function createSquadAction(payload: SquadPayload) {
      * Check whether the user is authenticated.
      * Unauthorized users are redirected to the login page.
      */
-    const session = await auth();
-    if (!session) redirect("/login");
-
+    await requireAuth();
     /**
      * Forward the squad creation request to the NestJS backend.
      */
@@ -90,8 +86,7 @@ export async function updateSquadAction(id: number, payload: SquadPayload) {
      * Check whether the user is authenticated.
      * Unauthorized users are redirected to the login page.
      */
-    const session = await auth();
-    if (!session) redirect("/login");
+    await requireAuth();
 
     /**
      * Forward the squad update request to the NestJS backend.

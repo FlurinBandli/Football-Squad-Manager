@@ -5,9 +5,7 @@
  * If the backend is unreachable, it shows an error message.
  */
 
-import { auth } from "@/auth";
 import { NestFetch } from "@/lib/nest-api";
-import { redirect } from "next/navigation";
 import { Trainer } from "@/types";
 import TrainersClient from "@/app/admin/trainers/components/trainers-client";
 
@@ -16,10 +14,6 @@ type TrainersPageProps = {
 };
 
 export default async function Trainers({ searchParams }: TrainersPageProps) {
-  // Check if the user is authenticated, if not redirect to login page
-  const session = await auth();
-  if (!session) redirect("/login");
-
   // Fetch all trainers from the NestJS backend API
   let trainers: Trainer[] = [];
   try {
