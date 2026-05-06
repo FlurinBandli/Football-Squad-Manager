@@ -21,6 +21,7 @@ export default function IconTooltipLink({
   className,
   size = "icon",
   variant = "default",
+  "aria-label": ariaLabel,
 }: {
   href: string;
   tooltip: string;
@@ -28,6 +29,7 @@ export default function IconTooltipLink({
   tooltipSide?: "top" | "right" | "bottom" | "left";
   target?: string;
   className?: string;
+  "aria-label"?: string;
 } & VariantProps<typeof buttonVariants>) {
   return (
     <TooltipProvider delayDuration={500} skipDelayDuration={100}>
@@ -37,6 +39,7 @@ export default function IconTooltipLink({
             href={href}
             target={target}
             className={cn(buttonVariants({ variant, size }), className)}
+            aria-label={ariaLabel ?? tooltip}
           >
             {children}
           </Link>

@@ -176,7 +176,11 @@ export default function TrainerForm({
             </Field>
 
             <SheetFooter>
-              <Button type="submit" className="cursor-pointer">
+              <Button
+                type="submit"
+                className="cursor-pointer"
+                aria-label="Trainer speichern"
+              >
                 Speichern
               </Button>
               <SheetClose asChild>
@@ -184,6 +188,7 @@ export default function TrainerForm({
                   type="button"
                   variant="outline"
                   className="cursor-pointer"
+                  aria-label="Bearbeitung abbrechen"
                 >
                   Abbrechen
                 </Button>

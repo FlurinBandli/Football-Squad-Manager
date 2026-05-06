@@ -11,17 +11,19 @@ export default function IconTooltipButton({
   tooltip,
   children,
   tooltipSide = "top",
+  "aria-label": ariaLabel,
   ...props
 }: {
   tooltip: string;
   children: ReactNode;
   tooltipSide?: "top" | "right" | "bottom" | "left";
+  "aria-label"?: string;
 } & ComponentProps<typeof Button>) {
   return (
     <TooltipProvider delayDuration={500} skipDelayDuration={100}>
       <Tooltip>
         <TooltipTrigger asChild>
-          <Button size="icon" {...props}>
+          <Button size="icon" aria-label={ariaLabel ?? tooltip} {...props}>
             {children}
           </Button>
         </TooltipTrigger>

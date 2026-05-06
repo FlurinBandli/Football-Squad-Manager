@@ -4,7 +4,6 @@
  * Allows navigation to view, edit or delete each squad, as well as creating a new squad.
  */
 
-import { auth } from "@/auth";
 import {
   Table,
   TableBody,
@@ -14,7 +13,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { NestFetch } from "@/lib/nest-api";
-import { redirect } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Eye, Pencil } from "lucide-react";
@@ -31,10 +29,6 @@ type SquadsPageProps = {
 };
 
 export default async function SquadsPage({ searchParams }: SquadsPageProps) {
-  // Check if the user is authenticated, if not redirect to login page
-  const session = await auth();
-  if (!session) redirect("/login");
-
   // Fetch all squads from the NestJS backend API
   let squads: Squad[] = [];
   try {

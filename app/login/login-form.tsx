@@ -90,8 +90,8 @@ export default function LoginForm() {
           )}
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <Field className="mb-2">
-              <FieldLabel>Benutzername</FieldLabel>
-              <Input autoFocus {...form.register("username")} />
+              <FieldLabel htmlFor="username">Benutzername</FieldLabel>
+              <Input id="username" autoFocus {...form.register("username")} />
               {form.formState.errors.username && (
                 <p className="text-sm text-red-600">
                   {form.formState.errors.username.message}
@@ -99,9 +99,10 @@ export default function LoginForm() {
               )}
             </Field>
             <Field className="mb-4">
-              <FieldLabel>Passwort</FieldLabel>
+              <FieldLabel htmlFor="password">Passwort</FieldLabel>
               <div className="relative">
                 <Input
+                  id="password"
                   type={showPassword ? "text" : "password"}
                   className="pr-10"
                   {...form.register("password")}
