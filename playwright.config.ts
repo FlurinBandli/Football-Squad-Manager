@@ -32,8 +32,10 @@ export default defineConfig({
   },
 
   /* Configure projects for major browsers */
+
   projects: [
     { name: "setup", testMatch: /.*\.setup\.ts/ },
+
     {
       name: "chromium",
       use: {
@@ -42,7 +44,7 @@ export default defineConfig({
       },
       dependencies: ["setup"],
     },
-
+    /*
     {
       name: "firefox",
       use: {
@@ -51,8 +53,7 @@ export default defineConfig({
       },
       dependencies: ["setup"],
     },
-
-    /*
+    
     {
       name: "webkit",
       use: {
@@ -61,8 +62,7 @@ export default defineConfig({
       },
       dependencies: ["setup"],
     },
-  */
-
+*/
     /* Test against mobile viewports. */
     // {
     //   name: 'Mobile Chrome',
