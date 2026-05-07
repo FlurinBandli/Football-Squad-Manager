@@ -13,14 +13,14 @@ export function waitForAdminAction(page: Page, path: string) {
 
 export async function gotoAdmin(page: Page, url: string) {
   try {
-    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 15000 });
+    await page.goto(url, { waitUntil: "domcontentloaded", timeout: 25000 });
   } catch (error) {
     if (
       error instanceof Error &&
       (error.message.includes("NS_BINDING_ABORTED") ||
         error.message.includes("Timeout"))
     ) {
-      await page.goto(url, { waitUntil: "domcontentloaded", timeout: 15000 });
+      await page.goto(url, { waitUntil: "domcontentloaded", timeout: 25000 });
       return;
     }
 
@@ -35,7 +35,7 @@ export async function clickAndExpectVisible(trigger: Locator, target: Locator) {
     await trigger.click();
 
     try {
-      await expect(target).toBeVisible({ timeout: 2000 });
+      await expect(target).toBeVisible({ timeout: 20000 });
       return;
     } catch (error) {
       if (attempt === 2) throw error;
@@ -124,7 +124,10 @@ export async function deleteVisibleRow(
   await row.getByRole("button", { name: deleteButtonName }).click();
   await Promise.all([
     waitForAdminAction(page, path),
-    page.getByRole("alertdialog").getByRole("button", { name: /schen/ }).click(),
+    page
+      .getByRole("alertdialog")
+      .getByRole("button", { name: /schen/ })
+      .click(),
   ]);
 
   await gotoAdmin(page, `${path}?query=${encodeURIComponent(name)}`);

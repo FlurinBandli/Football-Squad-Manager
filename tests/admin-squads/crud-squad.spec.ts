@@ -59,9 +59,15 @@ test("Create, edit and delete squad", async ({ page }) => {
   await editedRow.getByRole("button", { name: /Team .*schen/ }).click();
   await Promise.all([
     waitForSquadAction(),
-    page.getByRole("alertdialog").getByRole("button", { name: /schen/ }).click(),
+    page
+      .getByRole("alertdialog")
+      .getByRole("button", { name: /schen/ })
+      .click(),
   ]);
 
-  await gotoAdmin(page, `/admin/squads?query=${encodeURIComponent(editedName)}`);
+  await gotoAdmin(
+    page,
+    `/admin/squads?query=${encodeURIComponent(editedName)}`
+  );
   await expect(page.getByText("Keine Teams gefunden.")).toBeVisible();
 });

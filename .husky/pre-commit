@@ -1,0 +1,8 @@
+echo "Running ESLint..."
+npm run lint
+
+echo "Checking formatting..."
+npm run format:check
+
+echo "Running Playwright tests..."
+npm run test:e2e
