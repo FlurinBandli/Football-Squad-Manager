@@ -74,7 +74,10 @@ test("Create, edit and delete trainer", async ({ page }) => {
   await editedRow.getByRole("button", { name: /Trainer .*schen/ }).click();
   await Promise.all([
     waitForTrainerAction(),
-    page.getByRole("alertdialog").getByRole("button", { name: /schen/ }).click(),
+    page
+      .getByRole("alertdialog")
+      .getByRole("button", { name: /schen/ })
+      .click(),
   ]);
 
   await gotoAdmin(

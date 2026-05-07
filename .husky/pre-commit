@@ -1,3 +1,8 @@
+echo "Running ESLint..."
 npm run lint
-npm run format
+
+echo "Checking formatting..."
+npm run format:check
+
+echo "Running Playwright tests..."
 npm run test:e2e

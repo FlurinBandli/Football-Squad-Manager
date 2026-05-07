@@ -9,7 +9,9 @@ import {
 } from "./helpers/admin";
 
 test.describe("Delete confirmation", () => {
-  test("Cancel delete keeps the squad, player and trainer", async ({ page }) => {
+  test("Cancel delete keeps the squad, player and trainer", async ({
+    page,
+  }) => {
     const squadName = uniqueTestName("CancelSquad");
     const playerName = uniqueTestName("CancelPlayer");
     const trainerName = uniqueTestName("CancelTrainer");

@@ -17,24 +17,16 @@ The Football Squad Manager is a web application for managing football squads, pl
 **Steps:**
 
 1. Navigate to http://localhost:3000/login
-
-
-    - expect: The login page loads with username and password fields
+   - expect: The login page loads with username and password fields
 
 2. Enter 'vcg8guqi' in the username field
-
-
-    - expect: Username field is filled
+   - expect: Username field is filled
 
 3. Enter 'CFQ9NVYlHiPYgj' in the password field
-
-
-    - expect: Password field is filled
+   - expect: Password field is filled
 
 4. Click the Login button
-
-
-    - expect: Redirected to /admin/squads with squads list displayed
+   - expect: Redirected to /admin/squads with squads list displayed
 
 #### 1.2. Invalid Login Attempt
 
@@ -43,24 +35,16 @@ The Football Squad Manager is a web application for managing football squads, pl
 **Steps:**
 
 1. Navigate to http://localhost:3000/login
-
-
-    - expect: The login page loads
+   - expect: The login page loads
 
 2. Enter 'invalid' in the username field
-
-
-    - expect: Username field is filled
+   - expect: Username field is filled
 
 3. Enter 'wrong' in the password field
-
-
-    - expect: Password field is filled
+   - expect: Password field is filled
 
 4. Click the Login button
-
-
-    - expect: Error message displayed, not redirected
+   - expect: Error message displayed, not redirected
 
 ### 2. Squad Management
 
@@ -73,14 +57,10 @@ The Football Squad Manager is a web application for managing football squads, pl
 **Steps:**
 
 1. Navigate to /admin/squads
-
-
-    - expect: Table displays list of squads with columns: Id, Name, Description, Date, Actions
+   - expect: Table displays list of squads with columns: Id, Name, Description, Date, Actions
 
 2. Verify squads are present in the table
-
-
-    - expect: At least one squad is listed
+   - expect: At least one squad is listed
 
 #### 2.2. Search Squads
 
@@ -89,14 +69,10 @@ The Football Squad Manager is a web application for managing football squads, pl
 **Steps:**
 
 1. Navigate to /admin/squads
-
-
-    - expect: Search box is present
+   - expect: Search box is present
 
 2. Type 'Feuer' in the search box
-
-
-    - expect: Table shows only squads matching the search term
+   - expect: Table shows only squads matching the search term
 
 #### 2.3. Paginate Squads
 
@@ -105,14 +81,10 @@ The Football Squad Manager is a web application for managing football squads, pl
 **Steps:**
 
 1. Navigate to /admin/squads
-
-
-    - expect: Pagination controls are visible
+   - expect: Pagination controls are visible
 
 2. Click the 'Next' pagination button
-
-
-    - expect: Page 2 loads with different squads
+   - expect: Page 2 loads with different squads
 
 #### 2.4. View Public Squad Lineup
 
@@ -121,14 +93,10 @@ The Football Squad Manager is a web application for managing football squads, pl
 **Steps:**
 
 1. Navigate to /admin/squads
-
-
-    - expect: On squads list
+   - expect: On squads list
 
 2. Click the view icon for the first squad
-
-
-    - expect: Navigated to public squad page with lineup displayed
+   - expect: Navigated to public squad page with lineup displayed
 
 #### 2.5. Edit Squad
 
@@ -137,24 +105,16 @@ The Football Squad Manager is a web application for managing football squads, pl
 **Steps:**
 
 1. Navigate to /admin/squads
-
-
-    - expect: On squads list
+   - expect: On squads list
 
 2. Click the edit icon for the first squad
-
-
-    - expect: Edit form loads with current squad data
+   - expect: Edit form loads with current squad data
 
 3. Change the team name to 'Edited Squad'
-
-
-    - expect: Name field updated
+   - expect: Name field updated
 
 4. Click 'Team aktualisieren'
-
-
-    - expect: Redirected to squads list with updated name
+   - expect: Redirected to squads list with updated name
 
 #### 2.6. Create New Squad
 
@@ -163,24 +123,16 @@ The Football Squad Manager is a web application for managing football squads, pl
 **Steps:**
 
 1. Navigate to /admin/squads
-
-
-    - expect: On squads list
+   - expect: On squads list
 
 2. Click 'Neues Team erstellen'
-
-
-    - expect: New squad form loads
+   - expect: New squad form loads
 
 3. Fill team name 'New Squad', description 'Test squad', date '01.01.2025'
-
-
-    - expect: Form fields filled
+   - expect: Form fields filled
 
 4. Click 'Team erstellen'
-
-
-    - expect: Redirected to squads list with new squad added
+   - expect: Redirected to squads list with new squad added
 
 #### 2.7. Delete Squad
 
@@ -189,19 +141,13 @@ The Football Squad Manager is a web application for managing football squads, pl
 **Steps:**
 
 1. Navigate to /admin/squads
-
-
-    - expect: On squads list
+   - expect: On squads list
 
 2. Click the delete icon for a squad
-
-
-    - expect: Confirmation dialog appears
+   - expect: Confirmation dialog appears
 
 3. Confirm deletion in the dialog
-
-
-    - expect: Squad removed from list
+   - expect: Squad removed from list
 
 ### 3. Player Management
 
@@ -214,14 +160,10 @@ The Football Squad Manager is a web application for managing football squads, pl
 **Steps:**
 
 1. Navigate to /admin/players
-
-
-    - expect: Table displays list of players
+   - expect: Table displays list of players
 
 2. Verify players are present
-
-
-    - expect: Players listed with first name, last name, gender, actions
+   - expect: Players listed with first name, last name, gender, actions
 
 #### 3.2. Create New Player
 
@@ -230,24 +172,16 @@ The Football Squad Manager is a web application for managing football squads, pl
 **Steps:**
 
 1. Navigate to /admin/players
-
-
-    - expect: On players list
+   - expect: On players list
 
 2. Click 'Neuen Spieler erstellen'
-
-
-    - expect: A sheet/dialog titled 'Spieler erstellen' opens on the same page
+   - expect: A sheet/dialog titled 'Spieler erstellen' opens on the same page
 
 3. Fill first name 'John', last name 'Doe', gender 'Male'
-
-
-    - expect: Form filled
+   - expect: Form filled
 
 4. Click 'Spieler erstellen'
-
-
-    - expect: Redirected to players list with new player
+   - expect: Redirected to players list with new player
 
 ### 4. Trainer Management
 
@@ -260,14 +194,10 @@ The Football Squad Manager is a web application for managing football squads, pl
 **Steps:**
 
 1. Navigate to /admin/trainers
-
-
-    - expect: Table displays list of trainers
+   - expect: Table displays list of trainers
 
 2. Verify trainers are present
-
-
-    - expect: Trainers listed
+   - expect: Trainers listed
 
 ### 5. General
 
@@ -280,11 +210,7 @@ The Football Squad Manager is a web application for managing football squads, pl
 **Steps:**
 
 1. Navigate to /admin/squads
-
-
-    - expect: On admin page
+   - expect: On admin page
 
 2. Click the Logout button
-
-
-    - expect: Redirected to login page
+   - expect: Redirected to login page

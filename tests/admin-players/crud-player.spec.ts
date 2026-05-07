@@ -34,7 +34,10 @@ test("Create, edit and delete player", async ({ page }) => {
     page.getByRole("heading", { name: "Spieler erstellen" })
   ).not.toBeVisible();
 
-  await gotoAdmin(page, `/admin/players?query=${encodeURIComponent(firstName)}`);
+  await gotoAdmin(
+    page,
+    `/admin/players?query=${encodeURIComponent(firstName)}`
+  );
   await expect(
     page.getByRole("row", { name: new RegExp(firstName) })
   ).toBeVisible();
@@ -71,7 +74,10 @@ test("Create, edit and delete player", async ({ page }) => {
   await editedRow.getByRole("button", { name: /Spieler .*schen/ }).click();
   await Promise.all([
     waitForPlayerAction(),
-    page.getByRole("alertdialog").getByRole("button", { name: /schen/ }).click(),
+    page
+      .getByRole("alertdialog")
+      .getByRole("button", { name: /schen/ })
+      .click(),
   ]);
 
   await gotoAdmin(
